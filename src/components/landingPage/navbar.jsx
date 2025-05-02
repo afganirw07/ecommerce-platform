@@ -28,11 +28,31 @@ export default function Navbar() {
 
                 {/*news */}
                 <div className="hidden md:flex items-center ml-1 mr-3">
-                    <div className="flex space-x-4 font-[poppins] font-regular text-5sm md:ml-5 mr-8">
-                        <a href="#" className="hover:underline">News</a>
-                        <a href="#" className="hover:underline">About</a>
-                        <a href="#" className="hover:underline">Help</a>
+                    <div className="flex space-x-4 font-[poppins] font-regular text-5sm md:ml-5 mr-8 relative">
+                        <div className="group relative">
+                            <a href="#" className="hover:underline">News</a>
+                            <div className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg 
+                opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-10">
+                                Latest updates and articles.
+                            </div>
+
+                        </div>
+
+                        <div className="group relative">
+                            <a href="#" className="hover:underline">About</a>
+                            <div className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-10">
+                                Learn more about us.
+                            </div>
+                        </div>
+
+                        <div className="group relative">
+                            <a href="#" className="hover:underline">Help</a>
+                            <div className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-10">
+                                Get assistance here.
+                            </div>
+                        </div>
                     </div>
+
                     <FiShoppingCart className="text-xl cursor-pointer" />
                 </div>
                 {/* login and sign up */}
@@ -41,7 +61,7 @@ export default function Navbar() {
                     <button className="font-[poppins] font-semibold px-4 py-1 border border-black rounded-full cursor-pointer hover:bg-gray-800 hover:text-white transition duration-300">
                         Login
                     </button>
-                    <button className="font-[poppins] font-semibold px-4 py-1 bg-black text-white cursor-pointer rounded-full hover:bg-gray-800">
+                    <button className="font-[poppins] font-semibold px-4 py-1 bg-black text-white cursor-pointer rounded-full hover:bg-gray-800 ">
                         Sign Up
                     </button>
 
