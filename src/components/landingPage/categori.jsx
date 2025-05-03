@@ -13,7 +13,7 @@ const Categori = () => {
         <h1 className="transition duration-300 group-hover:text-gray-700">
           {item}
         </h1>
-        {/* underline effect */}
+        {/* underline */}
         <span className="absolute left-0 -bottom-2 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
       </div>
     ))}

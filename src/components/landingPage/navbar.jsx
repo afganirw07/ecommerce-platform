@@ -62,7 +62,7 @@ export default function Navbar() {
                         Login
                     </button>
                     <button className="font-[poppins] font-semibold px-4 py-1 bg-black text-white cursor-pointer rounded-full hover:bg-gray-800 ">
-                        Sign Up
+                        Regist
                     </button>
 
                 </div>
