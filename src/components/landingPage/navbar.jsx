@@ -27,8 +27,8 @@ export default function Navbar() {
                 </div>
 
                 {/*news */}
-                <div className="hidden md:flex items-center ml-1 mr-3">
-                    <div className="flex space-x-4 font-[poppins] font-regular text-5sm md:ml-5 mr-8 relative">
+                <div className="hidden md:flex items-center ml-1 mr-3 ">
+                <div className="flex space-x-4 font-[poppins] font-regular text-base md:text-sm md:ml-5 mr-8 relative">
                         <div className="group relative">
                             <a href="#" className="hover:underline">News</a>
                             <div className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg 
@@ -56,13 +56,13 @@ export default function Navbar() {
                     <FiShoppingCart className="text-xl cursor-pointer" />
                 </div>
                 {/* login and sign up */}
-                <div className="hidden md:flex items-center space-x-4 ml-5 mr-8">
+                <div className="hidden md:flex items-center space-x-4 ml-5 mr-10 :space-x-1 ">
 
                     <button className="font-[poppins] font-semibold px-4 py-1 border border-black rounded-full cursor-pointer hover:bg-gray-800 hover:text-white transition duration-300">
                         Login
                     </button>
                     <button className="font-[poppins] font-semibold px-4 py-1 bg-black text-white cursor-pointer rounded-full hover:bg-gray-800 ">
-                        Regist
+                        Regist 
                     </button>
 
                 </div>

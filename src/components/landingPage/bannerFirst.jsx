@@ -23,7 +23,7 @@ const BannerFirst = () => {
   return (
     <>
       {/* wrapper */}
-      <div className="px-4 sm:px-3 lg:px-16">
+      <div className="px-4 sm:px-7 lg:px-30">
         <div className="relative w-full mt-5 h-48 sm:h-60 md:h-72 lg:h-80 xl:h-[300px] mx-auto overflow-hidden rounded-2xl shadow-lg ">
           {/* banner */}
           <div
