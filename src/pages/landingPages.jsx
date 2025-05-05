@@ -10,7 +10,7 @@ const LandingPages = () => {
         <Navbar />
         <Categori />
         <BannerFirst />
-        <ProductRecomend /> 
+        <ProductRecomend />
         </>
     )
 }

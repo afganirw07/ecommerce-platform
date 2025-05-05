@@ -4,7 +4,7 @@ const Categori = () => {
     return (
         <>
         {/* categori */}
-           <div className="overflow-x-auto">
+           <div className="sticky top-0 z-50 overflow-x-auto">
   <div className="flex font-[poppins] font-semibold gap-7 items-center justify-center 
                   bg-gray-100 h-[50px] cursor-pointer text-[12px] sm:text-[14px] md:text-[16px] lg:text-[20px] 
                   text-black px-4 min-w-max whitespace-nowrap">
