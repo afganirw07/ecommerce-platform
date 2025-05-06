@@ -63,7 +63,7 @@ export default function Navbar() {
                         Login
                     </button>
                     <button className="font-[poppins] font-semibold px-4 py-1 bg-black text-white cursor-pointer rounded-full hover:bg-gray-800 ">
-                        Regist 
+                        Regis
                     </button>
 
                 </div>
@@ -80,7 +80,7 @@ export default function Navbar() {
 
             {/* mobile menu */}
             {isOpen && (
-                <div className="md:hidden mt-4 space-y-4">
+                <div className="md:hidden mt-3 space-y-4">
                     <div className="relative w-full">
                         <FiSearch className="absolute left-4 top-3 text-gray-400" />
                         <input

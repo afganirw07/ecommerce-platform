@@ -27,7 +27,7 @@ const ProductRecomend = () => {
   };
 
   return (
-    <div className="px-7 md:px-10 lg:px-30 xl:px-30 2xl:px-30 py-5">
+    <div className="px-7 md:px-10 lg:px-30 xl:px-30 2xl:px-30">
       <div className="relative">
         <h2 className="font-[poppins] text-lg font-semibold mb-3 mt-3 inline-flex items-center ">
           Recommended For You
@@ -51,7 +51,7 @@ const ProductRecomend = () => {
       </div>
 
        {/* bagian product */}
-<div className="overflow-x-auto sm:overflow-visible">
+<div className="overflow-x-auto sm:overflow-visible ">
   <div className="flex sm:grid sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-4 min-w-[600px] sm:min-w-0">
     {products.map((product) => (
       <div
@@ -76,7 +76,7 @@ const ProductRecomend = () => {
         <p className="font-[poppins] text-xs md:text-sm opacity-40">Lowest Ask</p>
         {/* bagian harga */}
         <p className="text-[18px] md:text-[20px] font-bold mb-1">${product.retailPrice}</p>
-        <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded">
+        <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2   py-1 rounded-md">
           <Rocket size={15} className="text-gray-900" />
           <span>Xpress Ship</span>
         </div>
