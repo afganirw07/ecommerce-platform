@@ -9,6 +9,7 @@ import FeaturedApparel from "../components/landingPage/featuredApparel";
 import BannerProduct from "../components/landingPage/bannerProduct";
 import Accessories from "../components/landingPage/accessories";
 import Favorit from "../components/landingPage/seasonFavorit";
+import NewLauching from "../components/landingPage/newLauching";
 
 const LandingPages = () => {
     return (
@@ -23,6 +24,7 @@ const LandingPages = () => {
         <BannerProduct />
         <Accessories />
         <Favorit />
+        <NewLauching />
         </>
     )
 }
