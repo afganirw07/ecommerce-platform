@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Logo from '../../../public/logo.svg';
 import { FiMenu, FiX, FiSearch, FiShoppingCart } from 'react-icons/fi';
 
+
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 

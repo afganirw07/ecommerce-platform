@@ -27,7 +27,7 @@ const ProductRecomend = () => {
   };
 
   return (
-    <div className="px-7 md:px-32 lg:px-40 xl:px-60 2xl:px-30 py-5">
+    <div className="px-7 md:px-10 lg:px-30 xl:px-30 2xl:px-30 py-5">
       <div className="relative">
         <h2 className="font-[poppins] text-lg font-semibold mb-3 mt-3 inline-flex items-center ">
           Recommended For You
@@ -52,7 +52,7 @@ const ProductRecomend = () => {
 
        {/* bagian product */}
 <div className="overflow-x-auto sm:overflow-visible">
-  <div className="flex sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-w-[600px] sm:min-w-0">
+  <div className="flex sm:grid sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-4 min-w-[600px] sm:min-w-0">
     {products.map((product) => (
       <div
         key={product._id}
