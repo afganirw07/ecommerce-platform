@@ -59,7 +59,7 @@ const ReleaseDate = () => {
               className="w-[160px] sm:w-auto shrink-0 sm:shrink rounded-xl border p-4 relative transition cursor-pointer"
             >
               {/* tanggal */}
-              <div className="font-[poppins] text-sm font-semibold">{product.date}</div>
+              <div className="font-[poppins] text-sm gon">{product.date}</div>
 
               {/* gambar */}
               <div className="relative flex justify-center items-center h-20 mb-2">
