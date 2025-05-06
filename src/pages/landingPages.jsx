@@ -11,6 +11,7 @@ import Accessories from "../components/landingPage/accessories";
 import Favorit from "../components/landingPage/seasonFavorit";
 import NewLauching from "../components/landingPage/newLauching";
 import ShoesProduct from "../components/landingPage/shoesProduct";
+import ReleaseDate from "../components/landingPage/releaseDate";
 
 const LandingPages = () => {
     return (
@@ -27,6 +28,8 @@ const LandingPages = () => {
         <Favorit />
         <NewLauching />
         <ShoesProduct />
+        <ReleaseDate />
+
         </>
     )
 }
