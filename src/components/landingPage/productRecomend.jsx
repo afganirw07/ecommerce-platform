@@ -13,7 +13,7 @@ const ProductRecomend = () => {
         const data = await response.json();
         // datanya di acak
       const shuffledData = data.sort(() => Math.random() - 0.5);
-        setProducts(shuffledData.slice(0, 5)); 
+        setProducts(shuffledData.slice(0,5)); 
       } catch (error) {
         console.error("Failed to fetch products:", error);
       }
@@ -65,7 +65,7 @@ const ProductRecomend = () => {
             alt={product.title}
             className="w-full h-[140px] object-contain"
           />
-          <button className="absolute top-2 right-2 text-gray-900 hover:text-red-500">
+          <button className="absolute top-2 right-2 text-gray-900 hover:text-red-500 transition duration-300 cursor-pointer"> 
             <Heart size={20} />
           </button>
         </div>
