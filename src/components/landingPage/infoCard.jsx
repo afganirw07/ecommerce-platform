@@ -24,7 +24,7 @@ const infoData = [
   },
 ];
 
-export default function InfoCardSection() {
+    const InfoCardSection = () => {
     return (
       <div className="px-7 mt-1 md:px-10 lg:px-30 xl:px-30 2xl:px-30 grid grid-cols-1 md:grid-cols-3 gap-4 px-4 py-8 text-white">
         {infoData.map((item, idx) => (
@@ -48,3 +48,5 @@ export default function InfoCardSection() {
     );
   }
   
+
+export default InfoCardSection;

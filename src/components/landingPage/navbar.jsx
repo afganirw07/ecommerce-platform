@@ -1,9 +1,28 @@
 import { useState } from 'react';
 import Logo from '../../../public/logo.svg';
 import { FiMenu, FiX, FiSearch, FiShoppingCart } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 
-export default function Navbar() {
+
+
+
+const Navbar = () => {
+
+    // bagian login and regis
+    const navigate = useNavigate()
+    const handleRegisOnclick = () => {
+        navigate('/register')
+        
+    }
+
+    const handleLoginOnclick = () => {
+        navigate('/login')
+    }
+    
+
+
+    // bagian hamburger
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -59,10 +78,10 @@ export default function Navbar() {
                 {/* login and sign up */}
                 <div className="hidden md:flex items-center space-x-4 ml-5 mr-10 :space-x-1 ">
 
-                    <button className="font-[poppins] font-semibold px-4 py-1 border border-black rounded-full cursor-pointer hover:bg-gray-800 hover:text-white transition duration-300">
+                    <button onClick={handleLoginOnclick} className="font-[poppins] font-semibold px-4 py-1 border border-black rounded-full cursor-pointer hover:bg-gray-800 hover:text-white transition duration-300">
                         Login
                     </button>
-                    <button className="font-[poppins] font-semibold px-4 py-1 bg-black text-white cursor-pointer rounded-full hover:bg-gray-800 ">
+                    <button onClick={handleRegisOnclick} className="font-[poppins] font-semibold px-4 py-1 bg-black text-white cursor-pointer rounded-full hover:bg-gray-800 ">
                         Regis
                     </button>
 
@@ -105,3 +124,5 @@ export default function Navbar() {
         </nav>
     );
 }
+
+export default Navbar

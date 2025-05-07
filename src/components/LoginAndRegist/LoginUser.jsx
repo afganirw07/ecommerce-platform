@@ -1,0 +1,91 @@
+import React from "react";
+import logo from "../../../public/logo.svg";
+import { useEffect } from "react";
+
+const LoginUser = () => {
+
+  // ubah judul
+  useEffect(() => {
+    document.title = 'Login'
+
+    return () => {
+      document.title = 'ReKicks | Style in Every Step'
+    }
+  }, [])
+
+
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* logo */}
+      <div className="flex justify-center border-b-2 border-gray-400 bg-gray-50 pt-5 pb-5">
+        <img src={logo} alt="Logo" className="w-40" />
+      </div>
+
+      {/* register */}
+      <div className="flex justify-center items-center min-h-[calc(100vh-100px)] px-4 py-15">
+        <div className="bg-white font-[poppins] p-8 rounded-lg shadow-md w-full max-w-md">
+          <h1 className="text-2xl font-bold text-center mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-gray-500 text-center mb-6">
+          Access to the world’s most exclusive and authenticated products.
+          </p>
+
+          <div className="space-y-4">
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                placeholder="email@gmail.com"
+                className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <input
+                type="password"
+                className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+              />
+            </div>
+
+            {/* Sign-Up Button */}
+            <button className="w-full bg-black text-white font-semibold py-2 rounded-md cursor-pointer hover:bg-gray-800 transition">
+              Login
+            </button>
+          </div>
+
+          {/* or */}
+          <div className="flex items-center my-4">
+            <hr className="flex-grow border-gray-300" />
+            <span className="mx-2 text-gray-500">or</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+
+          {/* Google */}
+          <button className="w-full flex items-center justify-center border border-gray-300 py-2 cursor-pointer rounded-md hover:bg-gray-50 transition">
+            <img
+              src="https://www.google.com/favicon.ico"
+              alt="Google Icon"
+              className="w-5 h-5 mr-2"
+            />
+            Log in with Google
+          </button>
+
+          {/* switchlink */}
+          <p className="text-center mt-4 text-sm">
+          Don’t have an account?{" "}
+            <a href="#" className="text-red-500 font-medium hover:underline">
+              Regis 
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginUser;
