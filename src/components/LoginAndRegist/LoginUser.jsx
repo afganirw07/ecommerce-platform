@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../../../public/logo.svg";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const LoginUser = () => {
 
@@ -38,7 +39,6 @@ const LoginUser = () => {
               <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
-                placeholder="email@gmail.com"
                 className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
@@ -78,9 +78,10 @@ const LoginUser = () => {
           {/* switchlink */}
           <p className="text-center mt-4 text-sm">
           Don’t have an account?{" "}
-            <a href="#" className="text-red-500 font-medium hover:underline">
-              Regis 
-            </a>
+            <Link to={"/register"} className="text-red-500 hover:underline">
+              Register
+            
+            </Link>
           </p>
         </div>
       </div>

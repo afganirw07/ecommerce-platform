@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../../../public/logo.svg";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const RegisterUser = () => {
 
@@ -38,7 +39,6 @@ const RegisterUser = () => {
               <label className="block text-sm font-medium text-gray-700">First Name</label>
               <input
                 type="text"
-                placeholder="First Name"
                 className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
@@ -48,7 +48,6 @@ const RegisterUser = () => {
               <label className="block text-sm font-medium text-gray-700">Last Name</label>
               <input
                 type="text"
-                placeholder="Last Name"
                 className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
@@ -58,7 +57,6 @@ const RegisterUser = () => {
               <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
-                placeholder="email@gmail.com"
                 className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
@@ -96,11 +94,13 @@ const RegisterUser = () => {
           </button>
 
           {/* switchlink */}
+          <link rel="stylesheet" href="" />
           <p className="text-center mt-4 text-sm">
-            Already have an account?{" "}
-            <a href="#" className="text-red-500 font-medium hover:underline">
-              Log-in
-            </a>
+            Already have an account?
+            <Link to={"/login"} className="text-red-500 font-medium hover:underline">
+              {" "}
+            Log-in
+            </Link>
           </p>
         </div>
       </div>
