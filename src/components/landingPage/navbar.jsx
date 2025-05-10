@@ -112,10 +112,10 @@ const Navbar = () => {
                         <a href="#">News</a>
                         <a href="#">About</a>
                         <a href="#">Help</a>
-                        <button className="w-full border border-black rounded-full py-2">
+                        <button onClick={handleLoginOnclick} className="w-full border border-black rounded-full py-2">
                             Login
                         </button>
-                        <button className="w-full bg-black text-white rounded-full py-2">
+                        <button onClick={handleRegisOnclick} className="w-full bg-black text-white rounded-full py-2">
                             Sign Up
                         </button>
                     </div>

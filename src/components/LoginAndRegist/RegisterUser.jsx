@@ -39,7 +39,7 @@ const navigate = useNavigate();
       
       navigate("/home");
     } catch (error) {
-      const msg = error.response?.data?.error || "Registration failed. Please try again.";
+     alert(error.response.data.error);  
     }
   };
 

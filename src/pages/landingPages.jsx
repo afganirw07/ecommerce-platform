@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import Navbar from "../components/landingPage/navbar";
 import Categori from "../components/landingPage/categori";
 import BannerFirst from "../components/landingPage/bannerFirst";
@@ -16,7 +16,23 @@ import PickForHer from "../components/landingPage/pickForher";
 import ForKidsproduct from "../components/landingPage/forKids";
 import Footer from "../components/landingPage/footer";
 
+// bagian inti
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 const LandingPages = () => {
+
+    const navigate = useNavigate(); 
+
+    // kalo dh ada token langsung ke home
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            navigate("/home");
+        }
+    }, []);
+
+
     return (
         <>
         <Navbar />

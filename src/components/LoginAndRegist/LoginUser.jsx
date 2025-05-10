@@ -6,6 +6,15 @@ import { login } from "../../service/authAPI";
 const LoginUser = () => {
   const navigate = useNavigate();
 
+  
+  // cek apakah user sudah login
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home");
+    }
+  }, []);
+
   // state untuk menyimpan input user
   const [form, setForm] = useState({
     email: "",
@@ -24,13 +33,17 @@ const LoginUser = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await login(form); // panggil service login
+      const res = await login(form);
       alert(res.data.message);
-      navigate("/home"); 
+      // simpan token
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      navigate("/home");
     } catch (error) {
       alert(error.response?.data?.error || "Login failed.");
       console.error("Login error:", error);
-    } 
+    }
   };
 
   return (
