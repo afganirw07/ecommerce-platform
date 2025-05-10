@@ -5,6 +5,7 @@ import LoginUser from "./components/LoginAndRegist/LoginUser";
 import RegisterUser from "./components/LoginAndRegist/RegisterUser";
 import Home from "./pages/home";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DetailProducts from "./pages/detailProducts";
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
       <Route path="/" element={<LandingPages />} />
       <Route path="/login" element={<LoginUser />} />
       <Route path="/register" element={<RegisterUser />} />
+      <Route path="/detail" element={<DetailProducts />} />
+      {/* protect */}
       <Route
         path="/home"
         element={
