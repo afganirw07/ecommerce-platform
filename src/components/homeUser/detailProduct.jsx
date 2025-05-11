@@ -23,7 +23,7 @@ const ProductDetail = () => {
     const sizes = [40, 41, 42, 43];
 
     return (
-        <div className="p-6 py-14 max-w-4xl mx-auto font-[Poppins]">
+        <div className="p-6 py-14 max-w-7xl mx-auto font-[Poppins]">
 
             <div className="flex flex-col md:flex-row px-5">
                 {/* Gambar Produk */}
@@ -42,13 +42,13 @@ const ProductDetail = () => {
                         <span>{product.category} / {product.brand}</span>
                     </div>
                      {/* Detail Produk */}
-                    <h1 className="text-2xl font-bold uppercase">{product.title}</h1>
-                    <p className="text-base text-gray-600 mt-1">{product.colorway}</p>
-                    <p className="text-md mt-2 opacity-70">$ {product.retailPrice}</p>
+                    <h1 className="text-2xl font-bold">{product.title}</h1>
+                    <p className="text-base text-gray-600 mt-2">{product.colorway}</p>
+                    <p className="text-2xl font-semibold mt-2 opacity-70">$ {product.retailPrice}</p>
 
                     {/* Pilihan Ukuran */}
                     <div className="mt-4">
-                        <p className="font-[poppins] text-sm font-medium">${product.brand} Sizes:</p>
+                        <p className="font-[poppins] text-sm font-medium">{product.brand} Sizes:</p>
                         <div className="flex gap-2 mt-2">
                             {sizes.map(size => (
                                 <button
@@ -104,7 +104,7 @@ const ProductDetail = () => {
                         <hr className="my-2 border-t border-gray-300" />
                         {isDescriptionOpen && (
                             <>
-                                <h3 className="text-base font-semibold uppercase">{product.title}</h3>
+                                <h3 className="text-base font-semibold mt-3 uppercase">{product.title}</h3>
                                 <p className="text-sm text-gray-600 mt-2">{product.description}</p>
                             </>
                         )}
@@ -113,8 +113,8 @@ const ProductDetail = () => {
 
                     {/* SKU dan Kategori */}
                     <div className="mt-4">
-                        <p className="text-sm text-gray-600">SKU: N/A</p>
-                        <p className="text-sm text-gray-600">Categories: {product.category}</p>
+                        <p className="text-sm text-gray-600"> <span className="text-black font-semibold">SKU:</span> N/A</p>
+                        <p className="text-sm text-gray-600"> <span className="text-black font-semibold">Categories:</span> {product.category}</p>
                     </div>
                 </div>
             </div>
