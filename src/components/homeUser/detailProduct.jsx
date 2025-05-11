@@ -39,23 +39,23 @@ const ProductDetail = () => {
                 <div className="md:w-1/2 md:pl-10">
                     {/* Breadcrumb */}
                     <div className="text-sm text-gray-500 mb-4">
-                        <span>Home / {product.category} / {product.brand}</span>
+                        <span>{product.category} / {product.brand}</span>
                     </div>
                      {/* Detail Produk */}
                     <h1 className="text-2xl font-bold uppercase">{product.title}</h1>
                     <p className="text-base text-gray-600 mt-1">{product.colorway}</p>
-                    <p className="text-2xl font-bold mt-2">${product.retailPrice}</p>
+                    <p className="text-md mt-2 opacity-70">$ {product.retailPrice}</p>
 
                     {/* Pilihan Ukuran */}
                     <div className="mt-4">
-                        <p className="text-sm font-medium">Sizes:</p>
+                        <p className="font-[poppins] text-sm font-medium">${product.brand} Sizes:</p>
                         <div className="flex gap-2 mt-2">
                             {sizes.map(size => (
                                 <button
                                     key={size}
                                     onClick={() => setSelectedSize(size)}
-                                    className={`border border-gray-300 px-3 py-1 text-sm ${selectedSize === size ? 'bg-gray-200' : 'bg-white'
-                                        } hover:bg-gray-100`}
+                                    className={`border border-gray-300 rounded px-3 py-1 text-sm ${selectedSize === size ? 'bg-red-500 text-white' : 'bg-white cursor-pointer'
+                                        } hover:bg-red-500 hover:text-white`}
                                 >
                                     {size}
                                 </button>
@@ -65,32 +65,32 @@ const ProductDetail = () => {
 
                     {/* Kontrol Kuantitas dan Tombol Aksi */}
                     <div className="mt-4 flex items-center gap-4">
-                        <div className="flex items-center border border-gray-300">
+                        <div className="flex items-center border rounded border-gray-300">
                             <button
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="px-3 py-2 text-lg"
+                                className="px-3 py-2 text-lg cursor-pointer"
                             >
                                 -
                             </button>
-                            <span className="px-4 py-2 text-lg">{quantity}</span>
+                            <span className="px-4 py-2 text-lg ">{quantity}</span>
                             <button
                                 onClick={() => setQuantity(quantity + 1)}
-                                className="px-3 py-2 text-lg"
+                                className="px-3 py-2 text-lg cursor-pointer"
                             >
                                 +
                             </button>
                         </div>
-                        <button className="bg-red-500 text-white px-6 py-2 uppercase font-medium hover:bg-red-600">
+                        <button className="bg-red-500 rounded text-white px-6 py-2 uppercase font-semibold cursor-pointer hover:bg-red-600">
                             Buy Now
                         </button>
                     </div>
 
                     {/* Tombol Tambahan */}
-                    <div className="mt-4 flex gap-2">
-                        <button className="border border-green-500 text-green-500 px-6 py-2 uppercase font-medium hover:bg-green-50">
+                    <div className="mt-4 flex gap-2 font-[poppins] font-semibold" >
+                        <button className="border bg-green-500 rounded text-white px-6 uppercase py-2 cursor-pointer hover:bg-green-600"> 
                             Contact Us For Purchase
                         </button>
-                        <button className="border border-gray-500 text-gray-500 px-6 py-2 uppercase font-medium hover:bg-gray-50">
+                        <button className="border bg-red-500 rounded text-white px-6 py-2 cursor-pointer uppercase hover:bg-red-600">
                             Add To Cart
                         </button>
                     </div>
