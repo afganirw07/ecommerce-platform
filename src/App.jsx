@@ -6,6 +6,7 @@ import RegisterUser from "./components/LoginAndRegist/RegisterUser";
 import Home from "./pages/home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DetailProducts from "./pages/detailProducts";
+import NotFound from "./pages/notFound";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 
 const ProductDetail = () => {
+
+
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState(null);
-    const [isDescriptionOpen, setIsDescriptionOpen] = useState(true); // Default open agar sesuai dengan gambar
+    const [isDescriptionOpen, setIsDescriptionOpen] = useState(true); // default 
 
     useEffect(() => {
         fetch('http://localhost:5000/api/products/68133e3d539b2a87d44ee6d4')
-            .then(response => {
+            .then(response => { 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -18,7 +20,7 @@ const ProductDetail = () => {
             .catch(error => console.error('Error fetching product:', error));
     }, []);
 
-    if (!product) return <div>Loading...</div>;
+   if (!product) return 
 
     const sizes = [40, 41, 42, 43];
 
