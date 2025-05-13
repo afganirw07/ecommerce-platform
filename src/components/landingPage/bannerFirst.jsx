@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 // Daftar gambar
 const images = [
-  "https://i.pinimg.com/736x/3f/f5/d8/3ff5d8e89bb68c41e912fadafa6f5f33.jpg",
-  "https://i.pinimg.com/736x/29/84/08/2984084e03fb883ceb36224ae5e9335b.jpg",
-  "https://i.pinimg.com/736x/da/c8/79/dac879167f41d15ae9647c6f65416c5c.jpg"
+  'https://i.pinimg.com/736x/3f/f5/d8/3ff5d8e89bb68c41e912fadafa6f5f33.jpg',
+  'https://i.pinimg.com/736x/29/84/08/2984084e03fb883ceb36224ae5e9335b.jpg',
+  'https://i.pinimg.com/736x/da/c8/79/dac879167f41d15ae9647c6f65416c5c.jpg',
 ];
 
 // bagian bulat bulat
@@ -47,7 +47,7 @@ const BannerFirst = () => {
                 key={index}
                 onClick={() => setCurrent(index)}
                 className={`w-3 h-3 rounded-full ${
-                  index === current ? "bg-red-500" : "bg-gray-400"
+                  index === current ? 'bg-red-500' : 'bg-gray-400'
                 } transition`}
               />
             ))}

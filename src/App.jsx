@@ -1,12 +1,12 @@
-import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import LandingPages from "./pages/landingPages";
-import LoginUser from "./components/LoginAndRegist/LoginUser";
-import RegisterUser from "./components/LoginAndRegist/RegisterUser";
-import Home from "./pages/home";
-import ProtectedRoute from "./components/ProtectedRoute";
-import DetailProducts from "./pages/detailProducts";
-import NotFound from "./pages/notFound";
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import LandingPages from './pages/landingPages';
+import LoginUser from './components/LoginAndRegist/LoginUser';
+import RegisterUser from './components/LoginAndRegist/RegisterUser';
+import Home from './pages/home';
+import ProtectedRoute from './components/ProtectedRoute';
+import DetailProducts from './pages/detailProducts';
+import NotFound from './pages/notFound';
 
 function App() {
   return (
@@ -15,7 +15,6 @@ function App() {
       <Route path="/login" element={<LoginUser />} />
       <Route path="/register" element={<RegisterUser />} />
       <Route path="/product/:id" element={<DetailProducts />} />
-
 
       {/* protect */}
       <Route

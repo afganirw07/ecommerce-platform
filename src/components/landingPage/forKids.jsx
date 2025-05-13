@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Heart, Rocket, CircleHelp } from "lucide-react";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useNavigate } from "react-router-dom"; 
+import React, { useEffect, useState } from 'react';
+import { Heart, Rocket, CircleHelp } from 'lucide-react';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useNavigate } from 'react-router-dom';
 
 const forKidsproduct = () => {
   const [products, setProducts] = useState([]);
@@ -17,18 +17,18 @@ const forKidsproduct = () => {
         const shuffledData = data.sort(() => Math.random() - 0.5);
         setProducts(shuffledData.slice(0, 5));
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error('Failed to fetch products:', error);
       }
     };
 
     fetchProducts();
   }, []);
 
-   // untuk navigasi
+  // untuk navigasi
   const navigate = useNavigate();
   const haddleProductClick = (productId) => {
     navigate(`/product/${productId}`);
-  }
+  };
 
   const handlePopoverToggle = () => {
     setPopover(!popover);
@@ -39,9 +39,7 @@ const forKidsproduct = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-3 mt-3 relative">
         <div className="flex items-center">
-          <h2 className="font-[poppins] text-lg font-semibold">
-          For Kids
-          </h2>
+          <h2 className="font-[poppins] text-lg font-semibold">For Kids</h2>
           <CircleHelp
             size={20}
             className="ml-2 text-gray-900 cursor-pointer"
@@ -51,7 +49,10 @@ const forKidsproduct = () => {
         </div>
         <p className="font-[poppins] text-red-600 inline-flex items-center cursor-pointer">
           See All
-          <ArrowForwardIosIcon className="text-red-600 ml-1" sx={{ fontSize: 12 }} />
+          <ArrowForwardIosIcon
+            className="text-red-600 ml-1"
+            sx={{ fontSize: 12 }}
+          />
         </p>
 
         {/* Popover */}
@@ -60,7 +61,10 @@ const forKidsproduct = () => {
             className="absolute z-10 top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-sm w-72"
             role="tooltip"
           >
-            <p>These handpicked items are perfect for making any kid's day extra special!</p>
+            <p>
+              These handpicked items are perfect for making any kid's day extra
+              special!
+            </p>
           </div>
         )}
       </div>
@@ -87,17 +91,19 @@ const forKidsproduct = () => {
               <p className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">
                 {product.title}
               </p>
-              <p className="font-[poppins] text-xs md:text-sm opacity-40">Lowest Ask</p>
-              <p className="text-[18px] md:text-[20px] font-bold mb-1">${product.retailPrice}</p>
+              <p className="font-[poppins] text-xs md:text-sm opacity-40">
+                Lowest Ask
+              </p>
+              <p className="text-[18px] md:text-[20px] font-bold mb-1">
+                ${product.retailPrice}
+              </p>
               <div className="flex items-center space-x-2 font-[poppins] text-xs md:text-sm ">
-
-              <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
-                <span>200 Sold</span>
-              </div>
-              <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
-                <Rocket size={15} className="text-gray-900" />
-              </div>
-             
+                <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
+                  <span>200 Sold</span>
+                </div>
+                <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
+                  <Rocket size={15} className="text-gray-900" />
+                </div>
               </div>
             </div>
           ))}

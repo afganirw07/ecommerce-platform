@@ -1,34 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import logo from "../../../public/logo.svg";
-import { login } from "../../service/authAPI";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../../public/logo.svg';
+import { login } from '../../service/authAPI';
 import toast, { Toaster } from 'react-hot-toast';
-
 
 const LoginUser = () => {
   const navigate = useNavigate();
-  
 
-  
   // cek apakah user sudah login
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
-      navigate("/home");
+      navigate('/home');
     }
   }, []);
 
   // state untuk menyimpan input user
   const [form, setForm] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   // ubah judul halaman
   useEffect(() => {
-    document.title = "Login";
+    document.title = 'Login';
     return () => {
-      document.title = "ReKicks | Style in Every Step";
+      document.title = 'ReKicks | Style in Every Step';
     };
   }, []);
 
@@ -41,13 +38,13 @@ const LoginUser = () => {
 
       setTimeout(() => {
         // simpan token
-        localStorage.setItem("token", res.data.token);
+        localStorage.setItem('token', res.data.token);
         // localStorage.setItem("user", JSON.stringify(res.data.user));
-  
-        navigate("/home");
+
+        navigate('/home');
       }, 2000);
     } catch (error) {
-      toast.error("Login failed. Please check your email and password.");
+      toast.error('Login failed. Please check your email and password.');
     }
   };
 
@@ -57,11 +54,10 @@ const LoginUser = () => {
       <div className="flex justify-center border-b-2 border-gray-400 bg-gray-50 pt-5 pb-5">
         <img src={logo} alt="Logo" className="w-40" />
       </div>
-      
 
       {/* Form login */}
       <div className="flex justify-center items-center min-h-[calc(100vh-100px)] px-4 py-15">
-         <Toaster position="top-center" />
+        <Toaster position="top-center" />
         <div className="bg-white font-[poppins] p-8 rounded-lg shadow-md w-full max-w-md">
           <h1 className="text-2xl font-bold text-center mb-2">Welcome Back</h1>
           <p className="text-gray-500 text-center mb-6">
@@ -71,7 +67,9 @@ const LoginUser = () => {
           <form onSubmit={handleLogin} className="space-y-4">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -84,7 +82,9 @@ const LoginUser = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -123,7 +123,7 @@ const LoginUser = () => {
 
           {/* Link ke register */}
           <p className="text-center mt-4 text-sm">
-            Don’t have an account?{" "}
+            Don’t have an account?{' '}
             <Link to="/register" className="text-red-500 hover:underline">
               Register
             </Link>

@@ -1,31 +1,25 @@
-import React, { useEffect, useState } from "react";
-import logo from "../../../public/logo.svg";
-import { Link } from "react-router-dom";
-import { register } from "../../service/authAPI";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import logo from '../../../public/logo.svg';
+import { Link } from 'react-router-dom';
+import { register } from '../../service/authAPI';
+import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
-
-
 const RegisterUser = () => {
-
-
-const navigate = useNavigate();
-
-
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: ""
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
   });
 
   // update title
   useEffect(() => {
-    document.title = "Register";
+    document.title = 'Register';
     return () => {
-      document.title = "ReKicks | Style in Every Step";
+      document.title = 'ReKicks | Style in Every Step';
     };
   }, []);
 
@@ -39,23 +33,22 @@ const navigate = useNavigate();
     e.preventDefault();
     try {
       const res = await register(form);
-      toast.success("Registration successful!");
+      toast.success('Registration successful!');
 
       setTimeout(() => {
         // save token
-        localStorage.setItem("token", res.data.token);
-        
-        navigate("/home");
-      }, 2000);
+        localStorage.setItem('token', res.data.token);
 
+        navigate('/home');
+      }, 2000);
     } catch (error) {
-     toast.error(error.response.data.error);  
+      toast.error(error.response.data.error);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50"> 
-       <Toaster position="top-center" />
+    <div className="min-h-screen bg-gray-50">
+      <Toaster position="top-center" />
       <div className="flex justify-center border-b-2 border-gray-400 bg-gray-50 pt-5 pb-5">
         <img src={logo} alt="Logo" className="w-40" />
       </div>
@@ -65,14 +58,18 @@ const navigate = useNavigate();
           onSubmit={handleRegister}
           className="bg-white font-[poppins] p-8 rounded-lg shadow-md w-full max-w-md"
         >
-          <h1 className="text-2xl font-bold text-center mb-2">Create an Account</h1>
+          <h1 className="text-2xl font-bold text-center mb-2">
+            Create an Account
+          </h1>
           <p className="text-gray-500 text-center mb-6">
             Access to the world’s most exclusive and authenticated products.
           </p>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">First Name</label>
+              <label className="block text-sm font-medium text-gray-700">
+                First Name
+              </label>
               <input
                 type="text"
                 name="firstName"
@@ -84,7 +81,9 @@ const navigate = useNavigate();
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Last Name</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Last Name
+              </label>
               <input
                 type="text"
                 name="lastName"
@@ -96,7 +95,9 @@ const navigate = useNavigate();
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -108,7 +109,9 @@ const navigate = useNavigate();
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -135,7 +138,7 @@ const navigate = useNavigate();
 
           <button
             type="button"
-            onClick={() => alert("gambar doang")}
+            onClick={() => alert('gambar doang')}
             className="w-full flex items-center justify-center border border-gray-300 py-2 cursor-pointer rounded-md hover:bg-gray-50 transition"
           >
             <img
@@ -148,7 +151,13 @@ const navigate = useNavigate();
 
           <p className="text-center mt-4 text-sm">
             Already have an account?
-            <Link to="/login" className="text-red-500 font-medium hover:underline"> Log-in</Link>
+            <Link
+              to="/login"
+              className="text-red-500 font-medium hover:underline"
+            >
+              {' '}
+              Log-in
+            </Link>
           </p>
         </form>
       </div>

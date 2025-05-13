@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Heart, Rocket, CircleHelp } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import React, { useEffect, useState } from 'react';
+import { Heart, Rocket, CircleHelp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const TrendingSneaker = () => {
   const [products, setProducts] = useState([]);
@@ -11,24 +11,26 @@ const TrendingSneaker = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const categories = "Sneakers"
-        const response = await fetch(`http://localhost:5000/api/products?category=${categories}`);
+        const categories = 'Sneakers';
+        const response = await fetch(
+          `http://localhost:5000/api/products?category=${categories}`
+        );
         const data = await response.json();
         const shuffledData = data.sort(() => Math.random() - 0.5);
         setProducts(shuffledData.slice(0, 5));
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error('Failed to fetch products:', error);
       }
     };
 
     fetchProducts();
   }, []);
 
-   // untuk navigasi
-    const navigate = useNavigate();
-    const haddleProductClick = (productId) => {
-      navigate(`/product/${productId}`);
-    }
+  // untuk navigasi
+  const navigate = useNavigate();
+  const haddleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  };
 
   const handlePopoverToggle = () => {
     setPopover(!popover);
@@ -51,7 +53,10 @@ const TrendingSneaker = () => {
         </div>
         <p className="font-[poppins] text-red-600 inline-flex items-center cursor-pointer">
           See All
-          <ArrowForwardIosIcon className="text-red-600 ml-1" sx={{ fontSize: 12 }} />
+          <ArrowForwardIosIcon
+            className="text-red-600 ml-1"
+            sx={{ fontSize: 12 }}
+          />
         </p>
 
         {/* Popover */}
@@ -60,7 +65,9 @@ const TrendingSneaker = () => {
             className="absolute z-10 top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-sm w-72"
             role="tooltip"
           >
-            <p>Discover the hottest sneakers everyone's talking about right now.</p>
+            <p>
+              Discover the hottest sneakers everyone's talking about right now.
+            </p>
           </div>
         )}
       </div>
@@ -87,17 +94,19 @@ const TrendingSneaker = () => {
               <p className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">
                 {product.title}
               </p>
-              <p className="font-[poppins] text-xs md:text-sm opacity-40">Lowest Ask</p>
-              <p className="text-[18px] md:text-[20px] font-bold mb-1">${product.retailPrice}</p>
+              <p className="font-[poppins] text-xs md:text-sm opacity-40">
+                Lowest Ask
+              </p>
+              <p className="text-[18px] md:text-[20px] font-bold mb-1">
+                ${product.retailPrice}
+              </p>
               <div className="flex items-center space-x-2 font-[poppins] text-xs md:text-sm ">
-
-              <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
-                <span>200 Sold</span>
-              </div>
-              <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
-                <Rocket size={15} className="text-gray-900" />
-              </div>
-             
+                <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
+                  <span>200 Sold</span>
+                </div>
+                <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
+                  <Rocket size={15} className="text-gray-900" />
+                </div>
               </div>
             </div>
           ))}
