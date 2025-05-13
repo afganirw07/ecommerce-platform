@@ -14,7 +14,9 @@ function App() {
       <Route path="/" element={<LandingPages />} />
       <Route path="/login" element={<LoginUser />} />
       <Route path="/register" element={<RegisterUser />} />
-      <Route path="/detail" element={<DetailProducts />} />
+      <Route path="/product/:id" element={<DetailProducts />} />
+
+
       {/* protect */}
       <Route
         path="/home"

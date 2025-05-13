@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Heart, Rocket, CircleHelp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const newLauching = () => {
@@ -21,6 +22,12 @@ const newLauching = () => {
 
         fetchProducts();
     }, []);
+
+    // untuk navigasi
+    const navigate = useNavigate();
+    const haddleProductClick = (productId) => {
+        navigate(`/product/${productId}`);
+    };
 
     const handlePopoverToggle = () => {
         setPopover(!popover);
@@ -64,6 +71,7 @@ const newLauching = () => {
                         <div
                             key={product._id}
                             className="w-[200px] sm:w-auto shrink-0 sm:shrink rounded-md p-2 relative transition cursor-pointer"
+                            onClick={() => haddleProductClick(product._id)}
                         >
                             <div className="relative">
                                 {/* Product Image */}

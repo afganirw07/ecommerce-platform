@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const ProductDetail = () => {
 
@@ -7,9 +8,29 @@ const ProductDetail = () => {
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState(null);
     const [isDescriptionOpen, setIsDescriptionOpen] = useState(true); // default 
+    
+     // ambil id 
+    const { id } = useParams();
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/products/68133e3d539b2a87d44ee6d4')
+  window.scrollTo(0, 0);
+}, []);
+
+useEffect(() => {
+  fetch(`http://localhost:5000/api/products/${id}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => setProduct(data))
+    .catch(error => console.error('Error fetching product:', error));
+}, [id]);
+
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/products/${id}`) 
             .then(response => { 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -18,7 +39,7 @@ const ProductDetail = () => {
             })
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product:', error));
-    }, []);
+    }, [id]);
 
    if (!product) return 
 
@@ -82,7 +103,7 @@ const ProductDetail = () => {
                                 +
                             </button>
                         </div>
-                        <button className="bg-red-500 rounded text-white px-6 py-2 uppercase font-semibold cursor-pointer hover:bg-red-600">
+                        <button className="bg-red-500 rounded text-white px-6 py-2 uppercase font-semibold cursor-pointer hover:bg-red-700">
                             Buy Now
                         </button>
                     </div>
@@ -92,7 +113,7 @@ const ProductDetail = () => {
                         <button className="border bg-green-500 rounded text-white px-6 uppercase py-2 cursor-pointer hover:bg-green-600"> 
                             Contact Us For Purchase
                         </button>
-                        <button className="border bg-red-500 rounded text-white px-6 py-2 cursor-pointer uppercase hover:bg-red-600">
+                        <button className="border bg-red-500 rounded text-white px-6 py-2 cursor-pointer uppercase hover:bg-red-700">
                             Add To Cart
                         </button>
                     </div>

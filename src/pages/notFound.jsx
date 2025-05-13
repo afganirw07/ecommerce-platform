@@ -20,25 +20,25 @@ const notFound = () => {
 
 
     return (
-         <section className="bg-white min-h-screen flex items-center justify-center px-4">
-      <div className="max-w-screen-sm text-center">
-        <h1 className="text-6xl lg:text-8xl font-extrabold text-black mb-4">
-          404
-        </h1>
-        <p className="text-xl lg:text-2xl font-semibold text-black opacity-70 mb-2">
-          Halaman tidak ditemukan
-        </p>
-        <p className="text-gray-500 dark:text-gray-400 mb-6">
-          Maaf, halaman yang kamu cari tidak tersedia. Silakan kembali ke beranda.
-        </p>
-        <button
-          onClick={handleRegisOnclick}
-          className="px-6 py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 transition"
-        >
-          Kembali ke Beranda
-        </button>
-      </div>
-    </section>
+        <section className="bg-white min-h-screen flex items-center justify-center px-4 font-[poppins]">
+            <div className="max-w-screen-sm text-center">
+                <h1 className="text-6xl lg:text-8xl font-extrabold text-black mb-4">
+                    404
+                </h1>
+                <p className="text-xl lg:text-2xl font-semibold text-black opacity-70 mb-2">
+                    Halaman tidak ditemukan
+                </p>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                    Maaf, halaman yang kamu cari tidak tersedia. Silakan kembali ke beranda.
+                </p>
+                <button
+                    onClick={handleRegisOnclick}
+                    className="px-6 py-3 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 transition"
+                >
+                    Kembali ke Beranda
+                </button>
+            </div>
+        </section>
 
     )
 

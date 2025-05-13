@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Heart, Rocket, CircleHelp } from "lucide-react";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useNavigate } from "react-router-dom";
 
 const relatedProduct = () => {
     const [products, setProducts] = useState([]);
@@ -10,8 +11,7 @@ const relatedProduct = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const categories = "Sandals"
-                const response = await fetch(`http://localhost:5000/api/products?category=${categories}`);
+                const response = await fetch(`http://localhost:5000/api/products`);
                 const data = await response.json();
                 const shuffledData = data.sort(() => Math.random() - 0.5);
                 setProducts(shuffledData.slice(0, 5));
@@ -23,6 +23,12 @@ const relatedProduct = () => {
         fetchProducts();
     }, []);
 
+     // untuk navigasi
+  const navigate = useNavigate();
+  const haddleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  }
+
     const handlePopoverToggle = () => {
         setPopover(!popover);
     };
@@ -33,7 +39,7 @@ const relatedProduct = () => {
             <div className="flex items-center justify-between mb-3 mt-3 relative">
                 <div className="flex items-center">
                     <h2 className="font-[poppins] text-lg font-semibold">
-                        Related Product
+                        Other items you may like
                     </h2>
                     <CircleHelp
                         size={20}
@@ -50,10 +56,10 @@ const relatedProduct = () => {
                 {/* Popover */}
                 {popover && (
                     <div
-                        className="absolute z-10 top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-sm w-72"
+                        className="absolute z-10 top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-sm w-72 sm:w-96 lg:w-96 xl:w-96 2xl:w-96"
                         role="tooltip"
                     >
-                        <p>Discover what others are loving with our most popular related products right now.</p>
+                        <p>Explore trending favorites loved by our customers</p>
                     </div>
                 )}
             </div>
@@ -65,6 +71,7 @@ const relatedProduct = () => {
                         <div
                             key={product._id}
                             className="w-[200px] sm:w-auto shrink-0 sm:shrink rounded-md p-2 relative transition cursor-pointer"
+                            onClick={() => haddleProductClick(product._id)}
                         >
                             <div className="relative">
                                 {/* Product Image */}

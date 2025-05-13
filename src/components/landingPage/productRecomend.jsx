@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Heart, Rocket,CircleHelp } from "lucide-react"; 
 
 const ProductRecomend = () => {
@@ -25,6 +26,11 @@ const ProductRecomend = () => {
   const handlePopoverToggle = () => {
     setPopover(!popover);
   };
+  // untuk navigasi
+  const navigate = useNavigate();
+  const haddleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  }
 
   return (
     <div className="px-7 md:px-10 lg:px-30 xl:px-30 2xl:px-30">
@@ -57,6 +63,7 @@ const ProductRecomend = () => {
       <div
         key={product._id}
         className="w-[200px] sm:w-auto shrink-0 sm:shrink rounded-md p-2 relative transition cursor-pointer"
+        onClick={() => haddleProductClick(product._id)} 
       >
         <div className="relative">
           {/* gambar product */}

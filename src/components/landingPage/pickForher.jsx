@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Heart, Rocket, CircleHelp } from "lucide-react";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useNavigate } from "react-router-dom";
 
 const pickForHer = () => {
   const [products, setProducts] = useState([]);
@@ -22,6 +23,12 @@ const pickForHer = () => {
 
     fetchProducts();
   }, []);
+
+   // untuk navigasi
+  const navigate = useNavigate();
+  const haddleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  }
 
   const handlePopoverToggle = () => {
     setPopover(!popover);
@@ -65,6 +72,7 @@ const pickForHer = () => {
             <div
               key={product._id}
               className="w-[200px] sm:w-auto shrink-0 sm:shrink rounded-md p-2 relative transition cursor-pointer"
+              onClick={() => haddleProductClick(product._id)}
             >
               <div className="relative">
                 {/* Product Image */}
