@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../public/logo.svg";
 import { login } from "../../service/authAPI";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const LoginUser = () => {
   const navigate = useNavigate();
+  
 
   
   // cek apakah user sudah login
@@ -34,15 +37,17 @@ const LoginUser = () => {
     e.preventDefault();
     try {
       const res = await login(form);
-      alert(res.data.message);
-      // simpan token
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      toast.success(res.data.message);
 
-      navigate("/home");
+      setTimeout(() => {
+        // simpan token
+        localStorage.setItem("token", res.data.token);
+        // localStorage.setItem("user", JSON.stringify(res.data.user));
+  
+        navigate("/home");
+      }, 2000);
     } catch (error) {
-      alert(error.response?.data?.error || "Login failed.");
-      console.error("Login error:", error);
+      toast.error("Login failed. Please check your email and password.");
     }
   };
 
@@ -52,9 +57,11 @@ const LoginUser = () => {
       <div className="flex justify-center border-b-2 border-gray-400 bg-gray-50 pt-5 pb-5">
         <img src={logo} alt="Logo" className="w-40" />
       </div>
+      
 
       {/* Form login */}
       <div className="flex justify-center items-center min-h-[calc(100vh-100px)] px-4 py-15">
+         <Toaster position="top-center" />
         <div className="bg-white font-[poppins] p-8 rounded-lg shadow-md w-full max-w-md">
           <h1 className="text-2xl font-bold text-center mb-2">Welcome Back</h1>
           <p className="text-gray-500 text-center mb-6">

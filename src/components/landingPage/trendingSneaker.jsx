@@ -81,9 +81,6 @@ const TrendingSneaker = () => {
                   alt={product.title}
                   className="w-full h-[140px] object-contain"
                 />
-                <button className="absolute top-2 right-2 text-gray-900 hover:text-red-500 transition duration-300 cursor-pointer">
-                  <Heart size={20} />
-                </button>
               </div>
 
               {/* Product Info */}

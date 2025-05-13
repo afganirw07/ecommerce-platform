@@ -111,7 +111,7 @@ useEffect(() => {
                     {/* Tombol Tambahan */}
                     <div className="mt-4 flex gap-2 font-[poppins] font-semibold" >
                         <button className="border bg-green-500 rounded text-white px-6 uppercase py-2 cursor-pointer hover:bg-green-600"> 
-                            Contact Us For Purchase
+                            Add To Wishlist
                         </button>
                         <button className="border bg-red-500 rounded text-white px-6 py-2 cursor-pointer uppercase hover:bg-red-700">
                             Add To Cart

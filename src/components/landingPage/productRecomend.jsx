@@ -72,9 +72,6 @@ const ProductRecomend = () => {
             alt={product.title}
             className="w-full h-[140px] object-contain"
           />
-          <button className="absolute top-2 right-2 text-gray-900 hover:text-red-500 transition duration-300 cursor-pointer"> 
-            <Heart size={20} />
-          </button>
         </div>
         {/* nama barang */}
         <p className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">

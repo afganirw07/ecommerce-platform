@@ -3,12 +3,16 @@ import logo from "../../../public/logo.svg";
 import { Link } from "react-router-dom";
 import { register } from "../../service/authAPI";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 
 const RegisterUser = () => {
 
 
 const navigate = useNavigate();
+
+
 
   const [form, setForm] = useState({
     firstName: "",
@@ -35,16 +39,23 @@ const navigate = useNavigate();
     e.preventDefault();
     try {
       const res = await register(form);
-      alert(res.data.message);
-      
-      navigate("/home");
+      toast.success("Registration successful!");
+
+      setTimeout(() => {
+        // save token
+        localStorage.setItem("token", res.data.token);
+        
+        navigate("/home");
+      }, 2000);
+
     } catch (error) {
-     alert(error.response.data.error);  
+     toast.error(error.response.data.error);  
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50"> 
+       <Toaster position="top-center" />
       <div className="flex justify-center border-b-2 border-gray-400 bg-gray-50 pt-5 pb-5">
         <img src={logo} alt="Logo" className="w-40" />
       </div>
