@@ -1,34 +1,31 @@
 import { useState } from 'react';
-import Logo from '../../../public/logo.svg';
-import {
-    FiMenu,
-    FiX,
-    FiSearch,
-    FiShoppingCart,
-    FiUser,
-    FiHeart,
-} from 'react-icons/fi';
+import { FiMenu, FiX, FiSearch, FiShoppingCart, FiUser, FiHeart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+
+
+
+import Logo from '../../../public/logo.svg';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-
     const navigate = useNavigate();
+
+    const handleCartClick = () => {
+        navigate('/cart');
+    }
+
+    // logo
     const handleLogoClick = () => {
-        navigate('/');
+        navigate('/home');
     };
 
     return (
+        <>
         <nav className="sticky top-0 z-50 px-10 py-3 mt-3 border-b border-gray-300 bg-white pb-7">
             <div className="flex items-center justify-between">
                 {/* Logo */}
-                <div className="w-32 md:w-40 md:ml-0">
-                    <img
-                        src={Logo}
-                        alt="Logo"
-                        className="w-full"
-                        onClick={handleLogoClick}
-                    />
+                <div className="w-32 md:w-40 md:ml-0 cursor-pointer" onClick={handleLogoClick}>
+                    <img src={Logo} alt="Logo" className="w-full" />
                 </div>
 
                 {/* Search */}
@@ -46,43 +43,25 @@ const Navbar = () => {
                 {/* News section */}
                 <div className="hidden md:flex items-center ml-1 mr-3">
                     <div className="flex space-x-4 font-[poppins] font-regular text-base md:text-sm md:ml-5 mr-8 relative">
-                        <div className="group relative">
-                            <a href="#" className="hover:underline">
-                                News
-                            </a>
-                            <div
-                                className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg 
-                 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-10"
-                            >
-                                Latest updates and articles.
+                        {['News', 'About', 'Help'].map((item) => (
+                            <div key={item} className="group relative">
+                                <a href="#" className="hover:underline">{item}</a>
+                                <div className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg 
+                                    opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-10">
+                                    {item === 'News' && 'Latest updates and articles.'}
+                                    {item === 'About' && 'Learn more about us.'}
+                                    {item === 'Help' && 'Get assistance here.'}
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="group relative">
-                            <a href="#" className="hover:underline">
-                                About
-                            </a>
-                            <div className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-10">
-                                Learn more about us.
-                            </div>
-                        </div>
-
-                        <div className="group relative">
-                            <a href="#" className="hover:underline">
-                                Help
-                            </a>
-                            <div className="absolute left-0 top-full mt-2 w-40 p-2 text-sm bg-white border rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-10">
-                                Get assistance here.
-                            </div>
-                        </div>
+                        ))}
                     </div>
 
-                    <FiShoppingCart className="text-xl cursor-pointer" />
+                    <FiShoppingCart onClick={handleCartClick} className="text-xl cursor-pointer" />
                 </div>
 
                 {/* Profile and Wishlist */}
                 <div className="hidden md:flex items-center space-x-6 ml-5 mr-10">
-                    <button className="text-xl cursor-pointer" title="Register">
+                    <button className="text-xl cursor-pointer" title="Wishlist">
                         <FiHeart />
                     </button>
 
@@ -96,10 +75,9 @@ const Navbar = () => {
                     <button className="w-full flex justify-center py-2 text-xl">
                         <FiHeart />
                     </button>
-                    <button className="w-full flex justify-center py-2 text-xl">
+                    <button onClick={handleCartClick} className="w-full flex justify-center py-2 text-xl">
                         <FiShoppingCart />
                     </button>
-                    {/* burger */}
                     <button onClick={() => setIsOpen(!isOpen)}>
                         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
                     </button>
@@ -121,11 +99,13 @@ const Navbar = () => {
                         <a href="#">News</a>
                         <a href="#">About</a>
                         <a href="#">Help</a>
-                        <a href="#">Profil</a>
+                        <a href="#">Profile</a>
                     </div>
                 </div>
             )}
         </nav>
+        
+        </>
     );
 };
 

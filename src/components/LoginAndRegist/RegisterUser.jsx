@@ -15,6 +15,14 @@ const RegisterUser = () => {
     password: '',
   });
 
+   // cek apakah user sudah login
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        navigate('/');
+      }
+    }, []);
+
   // update title
   useEffect(() => {
     document.title = 'Register';
@@ -38,6 +46,7 @@ const RegisterUser = () => {
       setTimeout(() => {
         // save token
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
 
         navigate('/home');
       }, 2000);
