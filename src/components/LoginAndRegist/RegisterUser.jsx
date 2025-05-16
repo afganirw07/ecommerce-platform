@@ -4,10 +4,61 @@ import { Link } from 'react-router-dom';
 import { register } from '../../service/authAPI';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../firebase-config';
 
 const RegisterUser = () => {
   const navigate = useNavigate();
 
+  // fungsi register google
+  const registerGoogle = async (idToken) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/google-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Something went wrong');
+      }
+
+      const data = await res.json();
+
+      console.log('Backend response:', data);
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      toast.success('Registration with Google successful!');
+      setTimeout(() => {
+        navigate('/home');
+      }, 2000);
+    } catch (error) {
+      if (error.message === 'Akun telah terdaftar, silakan login saja.') {
+      toast.error(error.message);
+    } else {
+      toast.error(error.message);
+    }
+  }
+  };
+
+  // button handle google
+  const registerWithGoogle = async () => {
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const idToken = res._tokenResponse.idToken; // gunakan token ini untuk backend
+
+      // Kirim token ke backend
+      await registerGoogle(idToken);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
+
+  // state untuk menyimpan input user
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -15,13 +66,13 @@ const RegisterUser = () => {
     password: '',
   });
 
-   // cek apakah user sudah login
-    useEffect(() => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        navigate('/');
-      }
-    }, []);
+  // cek apakah user sudah login
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/');
+    }
+  }, []);
 
   // update title
   useEffect(() => {
@@ -46,7 +97,7 @@ const RegisterUser = () => {
       setTimeout(() => {
         // save token
         localStorage.setItem('token', res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem('user', JSON.stringify(res.data.user));
 
         navigate('/home');
       }, 2000);
@@ -147,7 +198,7 @@ const RegisterUser = () => {
 
           <button
             type="button"
-            onClick={() => alert('gambar doang')}
+            onClick={registerWithGoogle}
             className="w-full flex items-center justify-center border border-gray-300 py-2 cursor-pointer rounded-md hover:bg-gray-50 transition"
           >
             <img

@@ -3,9 +3,54 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../public/logo.svg';
 import { login } from '../../service/authAPI';
 import toast, { Toaster } from 'react-hot-toast';
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../firebase-config";
 
 const LoginUser = () => {
   const navigate = useNavigate();
+
+  // fungsi register google
+  const loginGoogle = async (idToken) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/google-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!res.ok) {
+        throw new Error(errorData.error || 'Something went wrong');
+      }
+
+      const data = await res.json();
+
+      console.log('Backend response:', data);
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      toast.success('Registration with Google successful!');
+      setTimeout(() => {
+        navigate('/home');
+      }, 2000);
+    } catch (error) {
+      console.error('Error in registerGoogle:', error);
+    }
+  };
+
+  // button handle google
+  const loginWithGoogle = async () => {
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const idToken = res._tokenResponse.idToken; // gunakan token ini untuk backend
+
+      // Kirim token ke backend
+      await loginGoogle(idToken);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
 
   // cek apakah user sudah login
   useEffect(() => {
@@ -112,7 +157,7 @@ const LoginUser = () => {
           </div>
 
           {/* Login Google */}
-          <button className="w-full flex items-center justify-center border border-gray-300 py-2 cursor-pointer rounded-md hover:bg-gray-50 transition">
+          <button onClick={loginWithGoogle} className="w-full flex items-center justify-center border border-gray-300 py-2 cursor-pointer rounded-md hover:bg-gray-50 transition">
             <img
               src="https://www.google.com/favicon.ico"
               alt="Google Icon"
