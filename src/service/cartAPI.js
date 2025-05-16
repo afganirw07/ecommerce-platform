@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 // Add item to cart
-const addToCart = async (user, productId, quantity, color) => {
+const addToCart = async (user, productId, quantity, color, size) => {
   try {
     const response = await axios.post('http://localhost:5000/api/cart/add', {
       user,
       productId,
       quantity,
-      color
+      color,
+      size,
     });
     console.log('Cart updated:', response.data);
   } catch (error) {

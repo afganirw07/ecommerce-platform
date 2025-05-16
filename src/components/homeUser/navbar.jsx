@@ -16,7 +16,7 @@ const Navbar = () => {
 
     // logo
     const handleLogoClick = () => {
-        navigate('/home');
+        navigate('/');
     };
 
     return (

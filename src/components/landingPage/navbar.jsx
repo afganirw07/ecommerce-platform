@@ -2,9 +2,10 @@ import { useState } from 'react';
 import Logo from '../../../public/logo.svg';
 import { FiMenu, FiX, FiSearch, FiShoppingCart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Navbar = () => {
-  // bagian login and regis
+  //navigate
   const navigate = useNavigate();
   const handleRegisOnclick = () => {
     navigate('/register');
@@ -14,15 +15,28 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  }
+
+  const handleCartClick = () => {
+      toast.error('Please login to access your cart');
+      return;
+  }
+
+
   // bagian hamburger
   const [isOpen, setIsOpen] = useState(false);
 
   return (
+    <>
+    
     <nav className="sticky top-0 z-50 px-6 py-3 mt-3 border-b border-gray-300 bg-white pb-7  ">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="flex items-center justify-between">
         {/* logo icon */}
         <div className="w-32 md:w-40 md:ml-0">
-          <img src={Logo} alt="Logo" className="w-full" />
+          <img src={Logo} onClick={handleLogoClick} alt="Logo" className="w-full cursor-pointer" />
         </div>
 
         {/* search */}
@@ -71,7 +85,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <FiShoppingCart className="text-xl cursor-pointer" />
+          <FiShoppingCart onClick={handleCartClick} className="text-xl cursor-pointer" />
         </div>
         {/* login and sign up */}
         <div className="hidden md:flex items-center space-x-4 ml-5 mr-10 :space-x-1 ">
@@ -91,7 +105,7 @@ const Navbar = () => {
 
         {/* hamburger dan cart */}
         <div className="md:hidden justify-end flex items-center space-x-4">
-          <FiShoppingCart className="text-xl cursor-pointer" />
+          <FiShoppingCart onClick={handleCartClick}  className="text-xl cursor-pointer" />
           <button onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
@@ -129,6 +143,7 @@ const Navbar = () => {
         </div>
       )}
     </nav>
+    </>
   );
 };
 

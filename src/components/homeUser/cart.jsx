@@ -33,6 +33,7 @@ const Cart = () => {
     fetchCartItems();
   }, []);
 
+  // delete product from cart
   const handleRemoveItem = async (item) => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -52,6 +53,8 @@ const Cart = () => {
     }
   };
 
+
+  // Handle quantity change
   const handleQuantityChange = (id, delta) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
@@ -62,6 +65,7 @@ const Cart = () => {
     );
   };
 
+  // Calculate total price
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => {
       const price = parseFloat(item.productId.retailPrice);
@@ -74,7 +78,9 @@ const Cart = () => {
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
 
   return (
-    <div className="grid grid-cols-1 font-[poppins] lg:grid-cols-14 gap-3 p-4 py-10 max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 font-[poppins] lg:grid-cols-12 gap-3 py-10 max-w-7xl mx-auto sm:px-6 px-4">
+
+
       {/* Cart Items */}
       <div className="lg:col-span-8 space-y-4">
         <div className="hidden lg:flex justify-between text-5sm font-semibold uppercase border-b border-gray-300 pb-2 mb-4">
@@ -98,7 +104,11 @@ const Cart = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <p className="text-xs sm:text-sm font-semibold">{item.productId.title}</p>
-                      <p className="text-xs text-gray-500">{item.color}</p>
+                      <p className="text-xs text-gray-500">
+                        <span className="font-medium"></span> {item.color} &nbsp;|&nbsp;
+                        <span className="font-medium"></span> {item.size}
+                      </p>
+
                       <p className="text-sm text-gray-800 mt-1">Price: ${item.productId.retailPrice}</p>
                     </div>
                     <button
@@ -139,7 +149,10 @@ const Cart = () => {
                 <img src={item.productId.image} alt={item.productId.title} className="w-16 h-16 object-contain" />
                 <div>
                   <p className="text-[13px] font-medium">{item.productId.title}</p>
-                  <p className="text-xs text-gray-500">{item.color}</p>
+                  <p className="text-xs text-gray-500">
+                    <span className="font-medium"></span> {item.color} &nbsp;|&nbsp;
+                    <span className="font-medium"></span> {item.size}
+                  </p>
                 </div>
               </div>
 
