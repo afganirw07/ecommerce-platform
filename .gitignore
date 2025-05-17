@@ -26,3 +26,8 @@ dist-ssr
 # env hide
 .env*
 .env
+
+# Firebase
+firebase-debug.log
+firebase-config.js
+firebase.json
