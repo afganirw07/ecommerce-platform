@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import DetailProducts from './pages/detailProducts';
 import NotFound from './pages/notFound';
 import Cart from './pages/cart';
+import Wishlist from './pages/wishlist';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/register" element={<RegisterUser />} />
       <Route path="/product/:id" element={<DetailProducts />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/wishlist" element={<Wishlist />} />
 
       {/* protect */}
       <Route
