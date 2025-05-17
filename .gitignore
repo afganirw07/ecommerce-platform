@@ -29,5 +29,5 @@ dist-ssr
 
 # Firebase
 firebase-debug.log
-firebase-config.js
+src/firebase-config.js
 firebase.json
