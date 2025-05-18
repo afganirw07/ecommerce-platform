@@ -18,7 +18,7 @@ function App() {
       <Route path="/register" element={<RegisterUser />} />
       <Route path="/product/:id" element={<DetailProducts />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/favorites" element={<Wishlist />} />
 
       {/* protect */}
       <Route

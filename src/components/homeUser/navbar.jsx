@@ -14,6 +14,10 @@ const Navbar = () => {
         navigate('/cart');
     }
 
+    const handleFavoritesClick = () => {
+        navigate('/favorites');
+    }
+
     // logo
     const handleLogoClick = () => {
         navigate('/');
@@ -61,7 +65,7 @@ const Navbar = () => {
 
                 {/* Profile and Wishlist */}
                 <div className="hidden md:flex items-center space-x-6 ml-5 mr-10">
-                    <button className="text-xl cursor-pointer" title="Wishlist">
+                    <button onClick={handleFavoritesClick} className="text-xl cursor-pointer" title="Wishlist">
                         <FiHeart />
                     </button>
 
@@ -72,7 +76,7 @@ const Navbar = () => {
 
                 {/* Hamburger */}
                 <div className="md:hidden justify-end flex items-center space-x-4">
-                    <button className="w-full flex justify-center py-2 text-xl">
+                    <button onClick={handleFavoritesClick} className="w-full flex justify-center py-2 text-xl">
                         <FiHeart />
                     </button>
                     <button onClick={handleCartClick} className="w-full flex justify-center py-2 text-xl">
