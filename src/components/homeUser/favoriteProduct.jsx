@@ -188,11 +188,11 @@ const handleRemoveFromFavorites = async (productId) => {
             </div>
 
             <p  onClick={() => handleDetailProduct(product._id)} className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">
-              {product.title}
+              {product.productId.title}
               
             </p>
             <p  onClick={() => handleDetailProduct(product._id)} className="text-[18px] md:text-[20px] font-bold mb-1">
-              ${product.retailPrice}
+              ${product.productId.retailPrice}
             </p>
             <div className="flex items-center space-x-2 font-[poppins] text-xs md:text-sm">
               <div className="inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">

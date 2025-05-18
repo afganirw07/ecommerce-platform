@@ -15,12 +15,14 @@ import ReleaseDate from '../components/landingPage/releaseDate';
 import PickForHer from '../components/landingPage/pickForher';
 import ForKidsproduct from '../components/landingPage/forKids';
 import Footer from '../components/landingPage/footer';
+import ChatWidget from '../components/homeUser/chatWidget';
 
 const LandingPages = () => {
   return (
     <>
       <Navbar />
       <Categori />
+      <ChatWidget />
       <BannerFirst />
       <ProductRecomend />
       <PopularBrand />
