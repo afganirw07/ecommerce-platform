@@ -22,8 +22,6 @@ const FavoriteProducts = () => {
 
       const data = await res.json();
 
-      toast.success('Successfully fetched favorite items');
-
       if (Array.isArray(data.items)) {
         setWishlist(data.items);
       } else {

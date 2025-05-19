@@ -1,5 +1,14 @@
 @import 'tailwindcss';
 
+/* Dalam file CSS global atau styled-components */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;

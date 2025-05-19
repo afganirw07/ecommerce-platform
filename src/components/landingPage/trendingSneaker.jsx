@@ -88,7 +88,7 @@ const TrendingSneaker = () => {
                   alt={product.title}
                   className="w-full h-[140px] object-contain"
                 />
-              </div>
+              </div>      
 
               {/* Product Info */}
               <p className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">

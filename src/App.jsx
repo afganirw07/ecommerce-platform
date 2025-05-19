@@ -9,6 +9,7 @@ import DetailProducts from './pages/detailProducts';
 import NotFound from './pages/notFound';
 import Cart from './pages/cart';
 import Wishlist from './pages/wishlist';
+import './index.css';
 
 function App() {
   return (
