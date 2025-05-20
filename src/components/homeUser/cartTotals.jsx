@@ -26,7 +26,7 @@ const CartTotals = ({ calculateTotal }) => {
       const data = await validateCoupon(voucherCode);
       setDiscount(data.discount);
       setDiscountType(data.type);
-      setMessage(`Kupon "${data.code}" berhasil diterapkan!`);
+      setMessage(`Kupon berhasil diterapkan!`);
     } catch (err) {
       setDiscount(0);
       setDiscountType(null);

@@ -195,7 +195,7 @@ const ChatWidget = () => {
                   </div>
                   <div className="flex flex-col">
                     <div
-                      className={`px-3 sm:px-4 py-2 sm:py-3 rounded-2xl shadow-sm max-w-[280px] break-words ${
+                      className={`px-3 sm:px-4 py-2 sm:py-3 rounded-2xl shadow-sm max-w-[230px] break-words ${
                         msg.from === 'user'
                           ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-br-none'
                           : 'bg-white text-gray-800 border rounded-bl-none'

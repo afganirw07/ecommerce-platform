@@ -74,6 +74,7 @@ const ProductDetail = () => {
 
     if (!product) return;
 
+    // size
     const sizes = ['S', 'M', 'L', 'XL'];
 
     return (

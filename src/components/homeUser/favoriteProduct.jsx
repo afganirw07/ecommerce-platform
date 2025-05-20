@@ -137,7 +137,7 @@ const handleRemoveFromFavorites = async (productId) => {
                 src={product.productId.image || '/placeholder.jpg'}
                 alt={product.title}
                 className="w-full h-[140px] object-contain"
-                onClick={() => handleDetailProduct(product._id)}
+                onClick={() => handleDetailProduct(product.productId._id)}
               />
             </div>
 
@@ -185,11 +185,11 @@ const handleRemoveFromFavorites = async (productId) => {
               </div>
             </div>
 
-            <p  onClick={() => handleDetailProduct(product._id)} className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">
+            <p  onClick={() => handleDetailProduct(product.productId._id)} className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">
               {product.productId.title}
               
             </p>
-            <p  onClick={() => handleDetailProduct(product._id)} className="text-[18px] md:text-[20px] font-bold mb-1">
+            <p  onClick={() => handleDetailProduct(product.productId._id)} className="text-[18px] md:text-[20px] font-bold mb-1">
               ${product.productId.retailPrice}
             </p>
             <div className="flex items-center space-x-2 font-[poppins] text-xs md:text-sm">
