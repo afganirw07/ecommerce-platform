@@ -10,6 +10,7 @@ import NotFound from './pages/notFound';
 import Cart from './pages/cart';
 import Wishlist from './pages/wishlist';
 import './index.css';
+import Pembayaran from './pages/pembayaran';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/product/:id" element={<DetailProducts />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/favorites" element={<Wishlist />} />
+      <Route path="/payment" element={<Pembayaran />} />
 
       {/* protect */}
       <Route
