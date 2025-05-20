@@ -43,23 +43,34 @@ const ProductScroller = ({ products }) => {
 const ChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: 'Hello! I am your chat assistant. How can I help you?',
-      from: 'bot',
-      time: new Date().toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    },
-  ]);
+
+  // chat cek local
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem('chatMessages');
+    return saved
+      ? JSON.parse(saved)
+      : [
+          {
+            id: 1,
+            text: 'Hello! I am your chat assistant. How can I help you?',
+            from: 'bot',
+            time: new Date().toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+          },
+        ];
+  });
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef(null);
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    localStorage.setItem('chatMessages', JSON.stringify(messages))
+  }, [messages])
 
   useEffect(() => {
     scrollToBottom();

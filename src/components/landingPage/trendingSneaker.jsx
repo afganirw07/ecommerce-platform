@@ -102,7 +102,7 @@ const TrendingSneaker = () => {
               </p>
               <div className="flex items-center space-x-2 font-[poppins] text-xs md:text-sm ">
                 <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
-                  <span>200 Sold</span>
+                 <span>{Math.floor(Math.random() * 999) + 1} Sold</span>
                 </div>
                 <div className="mt inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">
                   <Rocket size={15} className="text-gray-900" />
