@@ -6,10 +6,10 @@ export default function Payment() {
     lastName: '',
     companyName: '',
     country: '',
-    countryRegion: '',
     province: '',
     subdistrict: '',
     streetAddress: '',
+    postcode: '',
     phone: '',
     email: '',
     orderNotes: ''
@@ -29,7 +29,7 @@ export default function Payment() {
   };
 
   return (
-    <div className="max-w-6xl mt-8 mx-auto p-4 font-sans">
+    <div className="max-w-6xl mt-8 mx-auto p-4 font-[poppins]">
       <div className="flex flex-col md:flex-row gap-8">
         {/* Billing Details Form */}
         <div className="w-full md:w-2/3">
@@ -37,23 +37,25 @@ export default function Payment() {
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-sm mb-1">First Name</label>
+                <label className="block text-sm mb-1">First Name <span className='font-bold text-red-500'>*</span></label>
                 <input
                   type="text"
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
                   className="w-full border border-gray-300 p-2 rounded"
+                  required
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">Last Name</label>
+                <label className="block text-sm mb-1">Last Name <span className='font-bold text-red-500'>*</span></label>
                 <input
                   type="text"
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleChange}
                   className="w-full border border-gray-300 p-2 rounded"
+                  required
                 />
               </div>
             </div>
@@ -70,35 +72,26 @@ export default function Payment() {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-1">Country / Region</label>
+              <label className="block text-sm mb-1">Country / Region <span className='font-bold text-red-500'>*</span></label>
               <input
                 type="text"
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-2 rounded"
+                required
               />
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-1">Country / Region</label>
-              <input
-                type="text"
-                name="countryRegion"
-                value={formData.countryRegion}
-                onChange={handleChange}
-                className="w-full border border-gray-300 p-2 rounded"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm mb-1">Province</label>
+              <label className="block text-sm mb-1">Province <span className='font-bold text-red-500'>*</span></label>
               <input
                 type="text"
                 name="province"
                 value={formData.province}
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-2 rounded"
+                required
               />
             </div>
 
@@ -114,35 +107,50 @@ export default function Payment() {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-1">Street address</label>
+              <label className="block text-sm mb-1">Street address <span className='font-bold text-red-500'>*</span></label>
               <input
                 type="text"
                 name="streetAddress"
                 value={formData.streetAddress}
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-2 rounded"
+                required
+              />
+            </div>
+
+             <div className="mb-4">
+              <label className="block text-sm mb-1">Postcode / ZIP <span className='font-bold text-red-500'>*</span></label>
+              <input
+                type="text"
+                name="postcode"
+                value={formData.postcode}
+                onChange={handleChange}
+                className="w-full border border-gray-300 p-2 rounded"
+                required
               />
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-1">Phone</label>
+              <label className="block text-sm mb-1">Phone <span className='font-bold text-red-500'>*</span></label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-2 rounded"
+                required
               />
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-1">Email address</label>
+              <label className="block text-sm mb-1">Email address <span className='font-bold text-red-500'>*</span></label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-2 rounded"
+                required
               />
             </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { validateCoupon } from "../../service/couponAPI"; 
+import { validateCoupon } from "../../service/couponAPI";
+import { useNavigate } from "react-router-dom"; 
 
 const CartTotals = ({ calculateTotal }) => {
   const storePickup = 5;
@@ -21,16 +22,23 @@ const CartTotals = ({ calculateTotal }) => {
 
   const finalTotal = Math.max(originalTotal - discountValue + storePickup + tax, 0);
 
+
+const navigate = useNavigate()
+
+const handleToHome = () => {
+  navigate("/")
+}
+
   const applyCoupon = async () => {
     try {
       const data = await validateCoupon(voucherCode);
       setDiscount(data.discount);
       setDiscountType(data.type);
-      setMessage(`Kupon berhasil diterapkan!`);
+      setMessage(`Coupon applied successfully!`);
     } catch (err) {
       setDiscount(0);
       setDiscountType(null);
-      setMessage(err.response?.data?.error || "*Kupon tidak valid.");
+      setMessage('Coupon not found')
     }
   };
 
@@ -75,6 +83,7 @@ const CartTotals = ({ calculateTotal }) => {
           <a
             href="#"
             className="text-sm font-medium text-red-500 hover:underline flex items-center gap-1"
+            onClick={handleToHome}
           >
             Continue Shopping
             <svg
