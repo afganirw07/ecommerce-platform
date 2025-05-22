@@ -11,6 +11,7 @@ import Cart from './pages/cart';
 import Wishlist from './pages/wishlist';
 import './index.css';
 import Pembayaran from './pages/pembayaran';
+import Payment from './components/pembayaran/billingDetails';
 
 function App() {
   return (
@@ -19,9 +20,6 @@ function App() {
       <Route path="/login" element={<LoginUser />} />
       <Route path="/register" element={<RegisterUser />} />
       <Route path="/product/:id" element={<DetailProducts />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/favorites" element={<Wishlist />} />
-      <Route path="/payment" element={<Pembayaran />} />
 
       {/* protect */}
       <Route
@@ -32,6 +30,32 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/cart"
+        element={
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+      path='/favorite'
+      element= {
+        <ProtectedRoute>
+          <Wishlist />
+        </ProtectedRoute>
+      }
+      />
+
+      <Route
+      path='/payment'
+      element={
+        <ProtectedRoute>
+          <Payment />
+        </ProtectedRoute>
+      }/>
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

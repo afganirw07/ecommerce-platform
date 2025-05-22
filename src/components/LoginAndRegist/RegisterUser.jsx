@@ -178,6 +178,8 @@ const RegisterUser = () => {
                 value={form.password}
                 onChange={handleChange}
                 required
+                minLength={8}
+                maxLength={15}
                 className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
