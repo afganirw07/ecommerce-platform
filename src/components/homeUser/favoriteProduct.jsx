@@ -35,18 +35,20 @@ const FavoriteProducts = () => {
   favoritesProduct();
 }, []);
 
-  // handle remove from favorites
-const handleRemoveFromFavorites = async (productId) => {
+ const handleRemoveFromFavorites = async (productId, size) => {
+  console.log("Remove clicked", productId, size);
   try {
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user?._id || user?.id;
 
-    const response = await deleteFromFavorite(userId, productId);
+    const response = await deleteFromFavorite(userId, productId, size);
     toast.success('Successfully removed from favorites');
     if (response) {
-      // Hapus dari state berdasarkan productId di dalam productId object
       setWishlist((prevWishlist) =>
-        prevWishlist.filter((item) => item.productId._id !== productId)
+        prevWishlist.filter(
+          (item) =>
+            !(item.productId._id === productId && item.size === size)
+        )
       );
       setOpenDropdown(null);
     }
@@ -56,6 +58,20 @@ const handleRemoveFromFavorites = async (productId) => {
   }
 };
 
+// share product
+const handleShareProduct = (productId) => {
+  const produkUrl = `http://localhost:5173/product/${productId}`
+  navigator.clipboard.writeText(produkUrl)
+  .then(() => {
+    toast.success('Link copied to clipboard!')
+    setOpenDropdown(null)
+  })
+  .catch((err) => {
+    toast.error('Failed to copy!')
+    console.log(err);
+    
+  })
+}
 
 
   useEffect(() => {
@@ -174,10 +190,10 @@ const handleRemoveFromFavorites = async (productId) => {
 
                 {openDropdown === product._id && (
                   <div className="absolute right-0 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                    <button onClick={() => handleShareProduct(product.productId._id)} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                       Share
                     </button>
-                    <button onClick={() => handleRemoveFromFavorites(product.productId._id)} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                    <button  onClick={() => handleRemoveFromFavorites(product.productId._id, product.size)} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                       Delete
                     </button>     
                   </div>

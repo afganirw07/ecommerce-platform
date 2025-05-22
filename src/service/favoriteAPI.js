@@ -17,10 +17,10 @@ export const addToFavorite = async (user, productId, size) => {
 
 
 // delete item from favorites
-export const deleteFromFavorite = async (userID, productId) => {
+export const deleteFromFavorite = async (userID, productId, size) => {
     try {
         const response = await axios.delete(
-            `http://localhost:5000/api/favorites/remove/${userID}/${productId}` );
+            `http://localhost:5000/api/favorites/remove/${userID}/${productId}/${size}` );
         return response.data;
     } catch (error) {
         console.error("Error removing item from favorite:", error);

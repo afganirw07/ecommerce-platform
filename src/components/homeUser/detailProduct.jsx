@@ -55,22 +55,26 @@ const ProductDetail = () => {
 
     // add to favorite
     const handleAddToFavorite = async () => {
-        if (!selectedSize) {
-            toast.error('Please select a size');
-            return;
-        }
-        if (!userId) {
-            toast.error('Please login to add items to your favorites');
-            return;
-        }
-        try {
-            await addToFavorite(userId, product._id, selectedSize);
-            toast.success('Successfully added to favorites!');
-        } catch (error) {
+    if (!selectedSize) {
+        toast.error('Please select a size');
+        return;
+    }
+    if (!userId) {
+        toast.error('Please login to add items to your favorites');
+        return;
+    }
+    try {
+        await addToFavorite(userId, product._id, selectedSize);
+        toast.success('Successfully added to favorites!');
+    } catch (error) {
+        if (error.response && error.response.status === 409) {
+            toast.error('Product already in favorites!');
+        } else {
             console.error('Error adding to favorites:', error);
             toast.error('Failed to add to favorites');
         }
-    };
+    }
+};
 
     if (!product) return;
 

@@ -17,16 +17,15 @@ const addToCart = async (user, productId, quantity, color, size) => {
 };
 
 // Delete item from cart
-export const deleteFromCart = async (userId, productId) => {
+export const deleteFromCart = async (userId, productId, size) => {
   try {
-    const response = await axios.delete(
-      `http://localhost:5000/api/cart/${userId}/${productId}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Error removing item from cart:', error);
-    throw error;
+    const res = await axios.delete(`http://localhost:5000/api/cart/${userId}/${productId}/${size}`);
+    return res.data;
+  } catch (err) {
+    console.error("Error deleting from cart:", err);
+    throw err;
   }
 };
+
 
 export default addToCart;

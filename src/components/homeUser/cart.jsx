@@ -40,14 +40,16 @@ const Cart = () => {
       const userId = user?.id;
       if (!userId) throw new Error('User ID not found');
 
-      const productId = item.productId._id; // PENTING: Ambil ID product dari item
+      const productId = item.productId._id;
+      const size = item.size
 
-      await deleteFromCart(userId, productId);
+      await deleteFromCart(userId, productId, size);
 
-      // Update state setelah item dihapus
+      // update cart
       setCartItems((prevItems) =>
-        prevItems.filter((i) => i.productId._id !== productId)
-      );
+  prevItems.filter((i) => !(i.productId._id === productId && i.size === size))
+);
+
     } catch (error) {
       console.error('Gagal menghapus item:', error);
     }

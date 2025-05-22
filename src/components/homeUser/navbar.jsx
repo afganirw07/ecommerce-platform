@@ -15,7 +15,7 @@ const Navbar = () => {
     }
 
     const handleFavoritesClick = () => {
-        navigate('/favorites');
+        navigate('/favorite');
     }
 
     // logo
