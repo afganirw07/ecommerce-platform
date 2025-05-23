@@ -79,7 +79,22 @@ const ProductDetail = () => {
     if (!product) return;
 
     // size
-    const sizes = ['S', 'M', 'L', 'XL'];
+ const categorySizeMap = {
+  'Streetwear Apparel': ['S', 'M', 'L', 'XL'],
+  'Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
+  'Running Shoes': ['US 7', 'US 8', 'US 9', 'US 10'],
+  'Basketball': ['US 7', 'US 8', 'US 9', 'US 10'],
+  'Skateboarding Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
+  'Skateboarding': ['US 7', 'US 8', 'US 9', 'US 10'],
+  'Lifestyle Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
+  'Accessories': [],
+  'Running': ['US 7', 'US 8', 'US 9', 'US 10'],
+  'Sandals': ['US 7', 'US 8', 'US 9', 'US 10'],
+};
+
+const sizes = categorySizeMap[product.category] || [];
+
+
 
     return (
         <div className="p-6 py-14 max-w-7xl mx-auto font-[Poppins]">
