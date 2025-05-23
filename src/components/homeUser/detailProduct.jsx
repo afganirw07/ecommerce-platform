@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import addToCart from '../../service/cartAPI';
 import toast, { Toaster } from 'react-hot-toast';
-import { addToFavorite} from '../../service/favoriteAPI';
+import { addToFavorite } from '../../service/favoriteAPI';
 
 
 const ProductDetail = () => {
@@ -39,7 +39,7 @@ const ProductDetail = () => {
             console.error('Error adding to cart:', error);
         }
     }
-    
+
     // ambil data product
     useEffect(() => {
         fetch(`http://localhost:5000/api/products/${id}`)
@@ -55,44 +55,44 @@ const ProductDetail = () => {
 
     // add to favorite
     const handleAddToFavorite = async () => {
-    if (!selectedSize) {
-        toast.error('Please select a size');
-        return;
-    }
-    if (!userId) {
-        toast.error('Please login to add items to your favorites');
-        return;
-    }
-    try {
-        await addToFavorite(userId, product._id, selectedSize);
-        toast.success('Successfully added to favorites!');
-    } catch (error) {
-        if (error.response && error.response.status === 409) {
-            toast.error('Product already in favorites!');
-        } else {
-            console.error('Error adding to favorites:', error);
-            toast.error('Failed to add to favorites');
+        if (!selectedSize) {
+            toast.error('Please select a size');
+            return;
         }
-    }
-};
+        if (!userId) {
+            toast.error('Please login to add items to your favorites');
+            return;
+        }
+        try {
+            await addToFavorite(userId, product._id, selectedSize);
+            toast.success('Successfully added to favorites!');
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                toast.error('Product already in favorites!');
+            } else {
+                console.error('Error adding to favorites:', error);
+                toast.error('Failed to add to favorites');
+            }
+        }
+    };
 
     if (!product) return;
 
     // size
- const categorySizeMap = {
-  'Streetwear Apparel': ['S', 'M', 'L', 'XL'],
-  'Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
-  'Running Shoes': ['US 7', 'US 8', 'US 9', 'US 10'],
-  'Basketball': ['US 7', 'US 8', 'US 9', 'US 10'],
-  'Skateboarding Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
-  'Skateboarding': ['US 7', 'US 8', 'US 9', 'US 10'],
-  'Lifestyle Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
-  'Accessories': [],
-  'Running': ['US 7', 'US 8', 'US 9', 'US 10'],
-  'Sandals': ['US 7', 'US 8', 'US 9', 'US 10'],
-};
+    const categorySizeMap = {
+        'Streetwear Apparel': ['S', 'M', 'L', 'XL'],
+        'Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
+        'Running Shoes': ['US 7', 'US 8', 'US 9', 'US 10'],
+        'Basketball': ['US 7', 'US 8', 'US 9', 'US 10'],
+        'Skateboarding Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
+        'Skateboarding': ['US 7', 'US 8', 'US 9', 'US 10'],
+        'Lifestyle Sneakers': ['US 7', 'US 8', 'US 9', 'US 10'],
+        'Accessories': ['One Sizes'],
+        'Running': ['US 7', 'US 8', 'US 9', 'US 10'],
+        'Sandals': ['US 7', 'US 8', 'US 9', 'US 10'],
+    };
 
-const sizes = categorySizeMap[product.category] || [];
+    const sizes = categorySizeMap[product.category] || [];
 
 
 
@@ -170,7 +170,7 @@ const sizes = categorySizeMap[product.category] || [];
                     </div>
 
                     {/* add button */}
-                    <div  className="mt-4 flex gap-2 font-[poppins] font-semibold">
+                    <div className="mt-4 flex gap-2 font-[poppins] font-semibold">
                         <button onClick={handleAddToFavorite} className="border bg-green-500 rounded text-white px-6 uppercase py-2 cursor-pointer hover:bg-green-600">
                             Add To Favorites
                         </button>
