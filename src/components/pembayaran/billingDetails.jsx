@@ -196,7 +196,7 @@ export default function Payment({ userId }) {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -210,7 +210,7 @@ export default function Payment({ userId }) {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -224,7 +224,7 @@ export default function Payment({ userId }) {
                 name="companyName"
                 value={formData.companyName}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
               />
             </div>
 
@@ -237,7 +237,7 @@ export default function Payment({ userId }) {
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -251,7 +251,7 @@ export default function Payment({ userId }) {
                 name="province"
                 value={formData.province}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -265,7 +265,7 @@ export default function Payment({ userId }) {
                 name="streetAddress"
                 value={formData.streetAddress}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -279,7 +279,7 @@ export default function Payment({ userId }) {
                 name="postcode"
                 value={formData.postcode}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -293,7 +293,7 @@ export default function Payment({ userId }) {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -307,7 +307,7 @@ export default function Payment({ userId }) {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
             </div>
@@ -321,7 +321,7 @@ export default function Payment({ userId }) {
                 value={formData.orderNotes}
                 onChange={handleChange}
                 rows="4"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 placeholder="Notes about your order, e.g. special notes for delivery."
               />
             </div>

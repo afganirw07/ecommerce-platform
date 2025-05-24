@@ -11,7 +11,7 @@ import Cart from './pages/cart';
 import Wishlist from './pages/wishlist';
 import './index.css';
 import Pembayaran from './pages/pembayaran';
-import Payment from './components/pembayaran/billingDetails';
+import Confirmations from './pages/afterPay';
 
 function App() {
   return (
@@ -53,6 +53,13 @@ function App() {
       element={
         <ProtectedRoute>
           <Pembayaran />
+        </ProtectedRoute>
+      }/>
+      <Route
+      path='/confirmations'
+      element={
+        <ProtectedRoute>
+          <Confirmations />
         </ProtectedRoute>
       }/>
 
