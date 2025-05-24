@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import addToCart from '../../service/cartAPI';
 import { addToFavorite } from '../../service/favoriteAPI';
-import { addToBuy } from '../../service/payment'; 
+import { addToBuy } from '../../service/payment';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -12,7 +13,7 @@ const ProductDetail = () => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   const { id } = useParams();
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user?._id || user?.id;
@@ -54,6 +55,7 @@ const ProductDetail = () => {
       });
   }, [id]);
 
+  // masukin ke keranjang
   const handleAddToCart = async () => {
     if (!selectedSize) {
       toast.error('Please select a size');
@@ -73,6 +75,7 @@ const ProductDetail = () => {
     }
   };
 
+  // masukin ke favorit
   const handleAddToFavorite = async () => {
     if (!selectedSize) {
       toast.error('Please select a size');
@@ -117,7 +120,8 @@ const ProductDetail = () => {
         },
       ],
       subtotal: product.retailPrice * quantity,
-      discount: 0,
+      discount: null,
+      pickup: null,
       shipping: {
         method: 'Express Shipping',
         estimate: '2-3 business days',
@@ -129,6 +133,9 @@ const ProductDetail = () => {
     try {
       await addToBuy(userId, orderData);
       toast.success('Order berhasil dibuat!');
+      setTimeout(() => {
+        navigate('/payment')
+      }, 2000);
     } catch (error) {
       console.error('Error placing order:', error);
       toast.error('Gagal membuat order');
@@ -154,8 +161,8 @@ const ProductDetail = () => {
         <div className="text-center">
           <p className="text-red-500 text-lg">Error: {error}</p>
           <p className="text-gray-600 mt-2">Product ID: {id}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           >
             Retry
@@ -177,7 +184,7 @@ const ProductDetail = () => {
     );
   }
 
-//   categori
+  //   categori
   const categorySizeMap = {
     'Streetwear Apparel': ['S', 'M', 'L', 'XL'],
     Sneakers: ['US 7', 'US 8', 'US 9', 'US 10'],
@@ -218,9 +225,8 @@ const ProductDetail = () => {
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`border border-gray-300 rounded px-3 py-1 text-sm ${
-                    selectedSize === size ? 'bg-red-500 text-white' : 'bg-white cursor-pointer'
-                  } hover:bg-red-500 hover:text-white`}
+                  className={`border border-gray-300 rounded px-3 py-1 text-sm ${selectedSize === size ? 'bg-red-500 text-white' : 'bg-white cursor-pointer'
+                    } hover:bg-red-500 hover:text-white`}
                 >
                   {size}
                 </button>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CartTotals from './CartTotals';
+import CartTotals from './cartTotals';
 import { deleteFromCart } from '../../service/cartAPI';
 
 const Cart = () => {

@@ -3,6 +3,7 @@ import { Rocket, Ellipsis } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { deleteFromFavorite } from '../../service/favoriteAPI';
 import toast, { Toaster } from 'react-hot-toast';
+import { addToBuy } from '../../service/payment';
 
 
 const FavoriteProducts = () => {
@@ -10,68 +11,122 @@ const FavoriteProducts = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const menuRef = useRef(null);
 
+  // fetch favoritee data
   useEffect(() => {
-  const favoritesProduct = async () => {
+    const favoritesProduct = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user?.id;
+        if (!userId) throw new Error('User ID not found');
+
+        const res = await fetch(`http://localhost:5000/api/favorites/${userId}`);
+        if (!res.ok) throw new Error('Failed to fetch favorite items');
+
+        const data = await res.json();
+
+        if (Array.isArray(data.items)) {
+          setWishlist(data.items);
+        } else {
+          throw new Error('Favorite data is not an array');
+        }
+      } catch (error) {
+        toast.error('Failed to fetch favorite items');
+        console.log(error);
+
+      }
+    };
+
+    favoritesProduct();
+  }, []);
+
+  // remove item from favorites
+  const handleRemoveFromFavorites = async (productId, size) => {
+    console.log("Remove clicked", productId, size);
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      const userId = user?.id;
-      if (!userId) throw new Error('User ID not found');
+      const userId = user?._id || user?.id;
 
-      const res = await fetch(`http://localhost:5000/api/favorites/${userId}`);
-      if (!res.ok) throw new Error('Failed to fetch favorite items');
-
-      const data = await res.json();
-
-      if (Array.isArray(data.items)) {
-        setWishlist(data.items);
-      } else {
-        throw new Error('Favorite data is not an array');
+      const response = await deleteFromFavorite(userId, productId, size);
+      toast.success('Successfully removed from favorites');
+      if (response) {
+        setWishlist((prevWishlist) =>
+          prevWishlist.filter(
+            (item) =>
+              !(item.productId._id === productId && item.size === size)
+          )
+        );
+        setOpenDropdown(null);
       }
     } catch (error) {
-      toast.error('Failed to fetch favorite items');
+      toast.error('Failed to remove from favorites');
+      console.error('Error removing from favorites:', error);
     }
   };
 
-  favoritesProduct();
-}, []);
+  // share product
+  const handleShareProduct = (productId) => {
+    const produkUrl = `http://localhost:5173/product/${productId}`
+    navigator.clipboard.writeText(produkUrl)
+      .then(() => {
+        toast.success('Link copied to clipboard!')
+        setOpenDropdown(null)
+      })
+      .catch((err) => {
+        toast.error('Failed to copy!')
+        console.log(err);
 
- const handleRemoveFromFavorites = async (productId, size) => {
-  console.log("Remove clicked", productId, size);
-  try {
+      })
+  }
+
+  // add to buy
+  // add to buy now
+  const handleBuyNow = async (product) => {
+    if (!product.size) {
+      toast.error('Please select a size');
+      return;
+    }
+
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user?._id || user?.id;
 
-    const response = await deleteFromFavorite(userId, productId, size);
-    toast.success('Successfully removed from favorites');
-    if (response) {
-      setWishlist((prevWishlist) =>
-        prevWishlist.filter(
-          (item) =>
-            !(item.productId._id === productId && item.size === size)
-        )
-      );
-      setOpenDropdown(null);
+    if (!userId) {
+      toast.error('Please login to place an order');
+      return;
     }
-  } catch (error) {
-    toast.error('Failed to remove from favorites');
-    console.error('Error removing from favorites:', error);
-  }
-};
 
-// share product
-const handleShareProduct = (productId) => {
-  const produkUrl = `http://localhost:5173/product/${productId}`
-  navigator.clipboard.writeText(produkUrl)
-  .then(() => {
-    toast.success('Link copied to clipboard!')
-    setOpenDropdown(null)
-  })
-  .catch((err) => {
-    toast.error('Failed to copy!')
-    console.log(err);
-    
-  })
-}
+    const orderData = {
+      products: [
+        {
+          productId: product.productId._id,
+          name: product.productId.title,
+          price: product.productId.retailPrice,
+          quantity: 1, // Default quantity
+          size: product.size,
+          colorway: product.productId.colorway || 'N/A',
+        },
+      ],
+      subtotal: product.productId.retailPrice,
+      discount: null,
+      pickup: null,
+      shipping: {
+        method: 'Express Shipping',
+        estimate: '2-3 business days',
+      },
+      total: product.productId.retailPrice,
+      paymentMethod: 'Credit Card / Virtual Account',
+    };
+
+    try {
+      await addToBuy(userId, orderData);
+      toast.success('Order created successfully!');
+      setTimeout(() => {
+        navigate('/payment');
+      }, 2000);
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast.error('Failed to create order');
+    }
+  };
 
 
   useEffect(() => {
@@ -158,8 +213,9 @@ const handleShareProduct = (productId) => {
             </div>
 
             <div className="flex justify-between items-center mt-3">
-        <button
-  className="
+              <button
+                onClick={() => handleBuyNow(product)}
+                className="
     font-[poppins] flex items-center justify-center
     border border-gray-500 rounded-full cursor-pointer hover:bg-gray-100 transition
       whitespace-nowrap
@@ -170,9 +226,9 @@ const handleShareProduct = (productId) => {
     lg:w-[90px] lg:px-7 lg:py-2.5 lg:text-base
     xl:w-[110px] xl:px-8 xl:py-3 xl:text-base
   "
->
-  Buy Now
-</button>
+              >
+                Buy Now
+              </button>
 
               {/* Dropdown Option Button */}
               <div className="relative inline-block text-left" ref={menuRef}>
@@ -185,7 +241,7 @@ const handleShareProduct = (productId) => {
                   }}
                   className="px-3 cursor-pointer py-2 font-semibold rounded-full "
                 >
-                  <Ellipsis size={40}  />
+                  <Ellipsis size={40} />
                 </button>
 
                 {openDropdown === product._id && (
@@ -193,19 +249,19 @@ const handleShareProduct = (productId) => {
                     <button onClick={() => handleShareProduct(product.productId._id)} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                       Share
                     </button>
-                    <button  onClick={() => handleRemoveFromFavorites(product.productId._id, product.size)} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                    <button onClick={() => handleRemoveFromFavorites(product.productId._id, product.size)} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                       Delete
-                    </button>     
+                    </button>
                   </div>
                 )}
               </div>
             </div>
 
-            <p  onClick={() => handleDetailProduct(product.productId._id)} className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">
+            <p onClick={() => handleDetailProduct(product.productId._id)} className="font-[poppins] text-[14px] md:text-[16px] mt-2 mb-1 font-light leading-tight line-clamp-2">
               {product.productId.title}
-              
+
             </p>
-            <p  onClick={() => handleDetailProduct(product.productId._id)} className="text-[18px] md:text-[20px] font-bold mb-1">
+            <p onClick={() => handleDetailProduct(product.productId._id)} className="text-[18px] md:text-[20px] font-bold mb-1">
               ${product.productId.retailPrice}
             </p>
             <div className="flex items-center space-x-2 font-[poppins] text-xs md:text-sm">

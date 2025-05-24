@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { validateCoupon } from "../../service/couponAPI";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const CartTotals = ({ calculateTotal }) => {
   const storePickup = 5;
@@ -11,23 +11,25 @@ const CartTotals = ({ calculateTotal }) => {
   const [discountType, setDiscountType] = useState(null);
   const [message, setMessage] = useState("");
 
-  const originalTotal = calculateTotal();
-  let discountValue = 0;
+  const originalTotal = typeof calculateTotal === "function" ? calculateTotal() : 0;
+  const safeOriginalTotal = isNaN(originalTotal) ? 0 : originalTotal;
 
+  let discountValue = 0;
   if (discountType === "percentage") {
-    discountValue = (originalTotal * discount) / 100;
+    discountValue = (safeOriginalTotal * discount) / 100;
   } else if (discountType === "fixed") {
     discountValue = discount;
   }
 
-  const finalTotal = Math.max(originalTotal - discountValue + storePickup + tax, 0);
+  const finalTotal = Math.max(safeOriginalTotal - discountValue + storePickup + tax, 0);
 
 
-const navigate = useNavigate()
 
-const handleToHome = () => {
-  navigate("/")
-}
+  const navigate = useNavigate()
+
+  const handleToHome = () => {
+    navigate("/")
+  }
 
   const applyCoupon = async () => {
     try {
@@ -39,6 +41,8 @@ const handleToHome = () => {
       setDiscount(0);
       setDiscountType(null);
       setMessage('Coupon not found')
+      console.log(err);
+
     }
   };
 
@@ -58,16 +62,21 @@ const handleToHome = () => {
           </dl>
           <dl className="flex items-center justify-between text-sm sm:text-base">
             <dt className="text-gray-600">Store Pickup</dt>
-            <dd className="font-medium text-gray-800">${storePickup.toFixed(2)}</dd>
+            <dd className="font-medium text-gray-800">
+              ${safeOriginalTotal === 0 ? '0.00' : storePickup.toFixed(2)}
+            </dd>
           </dl>
           <dl className="flex items-center justify-between text-sm sm:text-base">
             <dt className="text-gray-600">Tax</dt>
-            <dd className="font-medium text-gray-800">${tax.toFixed(2)}</dd>
+            <dd className="font-medium text-gray-800">
+              ${safeOriginalTotal === 0 ? '0.00' : tax.toFixed(2)}
+            </dd>
           </dl>
-
           <dl className="flex items-center justify-between border-t border-gray-200 pt-2 text-sm sm:text-base">
             <dt className="font-bold text-gray-900">Total</dt>
-            <dd className="font-bold text-gray-900">${finalTotal.toFixed(2)}</dd>
+            <dd className="font-bold text-gray-900">
+              ${safeOriginalTotal === 0 ? '0.00' : finalTotal.toFixed(2)}
+            </dd>
           </dl>
         </div>
 
