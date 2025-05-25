@@ -132,13 +132,13 @@ const ProductDetail = () => {
 
     try {
       await addToBuy(userId, orderData);
-      toast.success('Order berhasil dibuat!');
+      toast.success('Order successfully created!');
       setTimeout(() => {
         navigate('/payment')
       }, 2000);
     } catch (error) {
       console.error('Error placing order:', error);
-      toast.error('Gagal membuat order');
+      toast.error('Failed to create order');
     }
   };
 
