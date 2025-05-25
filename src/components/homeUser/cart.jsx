@@ -26,7 +26,6 @@ const Cart = () => {
         setLoading(false);
       } catch (error) {
         console.error('Error fetching cart items:', error);
-        setError('Failed to load cart items');
         setLoading(false);
       }
     };
@@ -91,8 +90,13 @@ const Cart = () => {
           <span className="w-1/5 text-center">Quantity</span>
           <span className="w-1/5 text-center">Subtotal</span>
         </div>
-
-        {cartItems.map((item) => {
+        
+        {cartItems.length === 0 ? (
+  <div className="text-center text-gray-600 py-10 text-lg font-bold">
+    You have no items in cart
+  </div>
+) : (
+  cartItems.map((item) => {
           const price = parseFloat(item.productId.retailPrice);
           const quantity = parseInt(item.quantity, 10);
           const subtotal = (!isNaN(price) && !isNaN(quantity)) ? price * quantity : 0;
@@ -120,6 +124,7 @@ const Cart = () => {
                       ×
                     </button>
                   </div>
+                  
 
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-1">
@@ -182,13 +187,14 @@ const Cart = () => {
                 </span>
               </div>
             </div>
+            
           );
-        })}
+        }))}
       </div>
 
       {/* Cart Totals */}
       <div className="lg:col-span-4 w-full">
-        <CartTotals calculateTotal={calculateTotal} />
+        <CartTotals cartItems={cartItems} calculateTotal={calculateTotal} />
       </div>
     </div>
   );

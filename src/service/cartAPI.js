@@ -27,5 +27,15 @@ export const deleteFromCart = async (userId, productId, size) => {
   }
 };
 
+// delete payment
+export const deleteCart = async (userId) => {
+  try {
+    const response = await axios.delete(`http://localhost:5000/api/cart/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export default addToCart;

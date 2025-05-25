@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { validateCoupon } from "../../service/couponAPI";
 import { useNavigate } from "react-router-dom";
+import { addToBuy } from '../../service/payment';
+import toast, { Toaster } from 'react-hot-toast';
+import { deleteCart} from "../../service/cartAPI";
 
-const CartTotals = ({ calculateTotal }) => {
+const CartTotals = ({ cartItems, calculateTotal }) => {
   const storePickup = 5;
   const tax = 10;
 
@@ -23,13 +26,11 @@ const CartTotals = ({ calculateTotal }) => {
 
   const finalTotal = Math.max(safeOriginalTotal - discountValue + storePickup + tax, 0);
 
-
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleToHome = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   const applyCoupon = async () => {
     try {
@@ -40,14 +41,66 @@ const CartTotals = ({ calculateTotal }) => {
     } catch (err) {
       setDiscount(0);
       setDiscountType(null);
-      setMessage('Coupon not found')
+      setMessage('Coupon not found');
       console.log(err);
-
     }
   };
 
+  const handleBuyNow = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user?._id || user?.id;
+
+    if (!userId) {
+      toast.error('Please login to place an order');
+      return;
+    }
+
+    if (!cartItems || cartItems.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
+    const products = cartItems.map((item) => ({
+      productId: item.productId._id,
+      name: item.productId.title,
+      price: item.productId.retailPrice,
+      quantity: item.quantity,
+      size: item.size,
+      colorway: item.productId.colorway || 'N/A',
+    }));
+
+    const subtotal = products.reduce((acc, p) => acc + p.price * p.quantity, 0);
+    const total = subtotal - discountValue + storePickup + tax;
+
+    const orderData = {
+      products,
+      subtotal,
+      discount: discountValue,
+      pickup: storePickup,
+      shipping: {
+        method: 'Express Shipping',
+        estimate: '2-3 business days',
+      },
+      total,
+      paymentMethod: 'Credit Card / Virtual Account',
+    };
+
+    try {
+      await addToBuy(userId, orderData);
+      await deleteCart(userId);
+      toast.success('Order created successfully!');
+      setTimeout(() => navigate('/payment'), 2000);
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast.error('Failed to create order');
+    }
+  };
+
+
   return (
     <div className="w-full max-w-md lg:max-w-xs xl:max-w-sm 2xl:max-w-md ml-auto space-y-6">
+      <Toaster position="top-center" reverseOrder={false} />
+
       <div className="space-y-4 rounded-lg border border-gray-300 p-4 shadow-md bg-white">
         <p className="text-xl font-semibold text-gray-800">Cart Totals</p>
 
@@ -80,12 +133,12 @@ const CartTotals = ({ calculateTotal }) => {
           </dl>
         </div>
 
-        <a
-          href="#"
-          className="block w-full text-center rounded-lg bg-red-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition"
+        <button
+          onClick={handleBuyNow}
+          className="block w-full rounded-lg bg-red-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition"
         >
           Proceed to Checkout
-        </a>
+        </button>
 
         <div className="flex justify-center items-center gap-2">
           <span className="text-sm text-gray-600">or</span>

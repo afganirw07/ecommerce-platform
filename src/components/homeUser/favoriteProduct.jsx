@@ -79,7 +79,6 @@ const FavoriteProducts = () => {
   }
 
   // add to buy
-  // add to buy now
   const handleBuyNow = async (product) => {
     if (!product.size) {
       toast.error('Please select a size');

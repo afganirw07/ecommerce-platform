@@ -370,24 +370,24 @@ export default function Payment({ userId }) {
               </div>
               <div className="space-y-3 mb-6">
                 {orderSummary.products && orderSummary.products.length > 0 ? (
-                  orderSummary.products.map((product, index) => (
-                    <div
-                      key={product.productId || product._id || index}
-                      className="flex justify-between items-center py-2"
-                    >
-                      <span className="text-gray-800 font-medium ">
-                        {product.name ||
-                          product.productName ||
-                          `Product ${index + 1}`}
-                      </span>
-                      <span className="text-gray-900 font-semibold pl-">
-                        $
-                        {(
-                          (product.price || 0) * (product.quantity || 1)
-                        ).toFixed(2)}
-                      </span>
-                    </div>
-                  ))
+                  orderSummary.products.flatMap((product, index) => {
+                    const qty = product.quantity || 1;
+                    // Buat array sebanyak qty, untuk render item berulang
+                    return Array.from({ length: qty }).map((_, i) => (
+                      <div
+                        key={`${product.productId || product._id || index}-${i}`}
+                        className="flex justify-between items-center py-2"
+                      >
+                        <span className="text-gray-800 font-medium ">
+                          {product.name || product.productName || `Product ${index + 1}`}
+                        </span>
+                        <span className="text-gray-900 font-semibold pl-2">
+                          ${(product.price || 0).toFixed(2)}
+                        </span>
+                      </div>
+                    ));
+                  })
+
                 ) : (
                   <p className="text-gray-500 text-center py-4">
                     No products in order
