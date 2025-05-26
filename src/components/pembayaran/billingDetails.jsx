@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { seeAllPayment, deletePayment } from '../../service/payment';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UNSAFE_NavigationContext } from 'react-router-dom';
+import { addInvoice } from '../../service/invoice';
 
 export default function Payment({ userId }) {
   const navigation = useContext(UNSAFE_NavigationContext).navigator;
@@ -9,24 +10,33 @@ export default function Payment({ userId }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    companyName: '',
-    country: '',
-    province: '',
-    subdistrict: '',
-    streetAddress: '',
-    postcode: '',
-    phone: '',
-    email: '',
-    orderNotes: '',
+    firstName: "",
+    lastName: "",
+    companyName: "",
+    country: "",
+    province: "",
+    streetAddress: "",
+    postcode: "",
+    phone: "",
+    email: "",
+    orderNotes: "",
+    shippingMethod: "Standard Shipping",
+    paymentMethod: "",
   });
 
   const [orderSummary, setOrderSummary] = useState(null);
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selected, setSelected] = useState(null);
 
+  // Set email from user data
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user?.email) {
+      setFormData(prev => ({ ...prev, email: user.email }));
+    }
+  }, []);
 
   // Fetch payment data
   useEffect(() => {
@@ -38,6 +48,7 @@ export default function Payment({ userId }) {
         if (!currentUserId) throw new Error('User ID not found');
 
         const data = await seeAllPayment(currentUserId);
+        console.log('API Data:', data);
 
         if (Array.isArray(data)) {
           setPaymentHistory(data);
@@ -48,16 +59,19 @@ export default function Payment({ userId }) {
             let totalDiscount = 0;
 
             data.forEach((payment) => {
-              if (payment.products && Array.isArray(payment.products)) {
-                payment.products.forEach((product) => {
-                  allProducts.push({
-                    ...product,
-                    paymentId: payment._id,
-                    paymentDate: payment.createdAt || payment.date,
-                  });
+              const items = payment.items || payment.products || [];
+              if (Array.isArray(items)) {
+                items.forEach((item) => {
+                  if (item.productId && (item.name || item.productName) && item.price) {
+                    allProducts.push({
+                      ...item,
+                      paymentId: payment._id,
+                      paymentDate: payment.createdAt || payment.date,
+                    });
+                  }
                 });
               }
-              totalSubtotal += payment.subtotal || 0;
+              totalSubtotal += payment.subtotalProduct || payment.subtotal || 0;
               totalDiscount += payment.discount || 0;
             });
 
@@ -68,6 +82,7 @@ export default function Payment({ userId }) {
             setOrderSummary({
               products: allProducts,
               subtotal: totalSubtotal,
+              subtotalProduct: totalSubtotal,
               discount: totalDiscount,
               storePickup,
               tax,
@@ -80,10 +95,10 @@ export default function Payment({ userId }) {
               totalPayments: data.length,
             });
           } else {
-            // no payments
             setOrderSummary({
               products: [],
               subtotal: 0,
+              subtotalProduct: 0,
               discount: 0,
               storePickup: 5,
               tax: 10,
@@ -111,6 +126,7 @@ export default function Payment({ userId }) {
         setOrderSummary({
           products: [],
           subtotal: 0,
+          subtotalProduct: 0,
           discount: 0,
           storePickup: 5,
           tax: 10,
@@ -134,14 +150,88 @@ export default function Payment({ userId }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Confirm dialog on leaving page and delete payments if confirmed
+  // Validate form data
+  const validateForm = () => {
+    const requiredFields = ['firstName', 'lastName', 'country', 'province', 'streetAddress', 'postcode', 'phone', 'email'];
+    for (const field of requiredFields) {
+      if (!formData[field]) {
+        return `Please fill in ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`;
+      }
+    }
+    if (!/^[0-9]{10,15}$/.test(formData.phone)) {
+      return 'Phone number must be 10-15 digits';
+    }
+    if (!/.+\@.+\..+/.test(formData.email)) {
+      return 'Invalid email format';
+    }
+    return null;
+  };
+
+  // Add invoice
+  const handleAddInvoice = async () => {
+    const validationError = validateForm();
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
+    if (!formData.paymentMethod) {
+      alert('Please select a payment method.');
+      return;
+    }
+
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const currentUserId = userId || user?.id || user?._id;
+
+      if (!currentUserId) throw new Error('User ID not found');
+
+      const invoiceData = {
+        user: currentUserId,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        companyName: formData.companyName,
+        country: formData.country,
+        province: formData.province,
+        streetAddress: formData.streetAddress,
+        postcode: formData.postcode,
+        phone: formData.phone,
+        email: formData.email,
+        orderNotes: formData.orderNotes,
+        items: orderSummary.products.map(product => ({
+          productId: product.productId || product._id,
+          productName: product.name || product.productName || 'Unknown Product',
+          size: product.size || 'Default',
+          quantity: product.quantity || 1,
+          unitPrice: product.price || 0,
+          totalPrice: (product.price || 0) * (product.quantity || 1)
+        })),
+        subtotalProduct: orderSummary.subtotalProduct || 0,
+        discount: orderSummary.discount || 0,
+        shippingMethod: formData.shippingMethod,
+        paymentMethod: formData.paymentMethod,
+      };
+
+      console.log('Sending invoiceData:', invoiceData);
+
+      const response = await addInvoice(currentUserId, invoiceData);
+      console.log('Invoice added successfully:', response);
+      alert('Order confirmed successfully!');
+      navigate('/invoice');
+    } catch (err) {
+      console.error('Error adding invoice:', err);
+      alert(`Failed to add invoice: ${err.message}`);
+    }
+  };
+
+  // Confirm dialog on leaving page
   useEffect(() => {
     const currentPath = location.pathname;
 
     return () => {
       const nextPath = window.location.pathname;
       if (currentPath !== nextPath) {
-        const confirmLeave = window.confirm('Ingin keluar dari halaman ini?');
+        const confirmLeave = window.confirm('Want to leave this page?');
         if (!confirmLeave) {
           navigate(currentPath);
         } else {
@@ -196,6 +286,13 @@ export default function Payment({ userId }) {
     );
   }
 
+  // Payment methods
+  const paymentMethods = [
+    { id: 'visa', name: 'Visa', logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa.svg' },
+    { id: 'mastercard', name: 'Mastercard', logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard.svg' },
+    { id: 'amex', name: 'Paypal', logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal.svg' },
+    { id: 'jcb', name: 'JCB', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/JCB_logo.svg/450px-JCB_logo.svg.png' },
+  ];
 
   return (
     <div className="max-w-6xl mt-8 mx-auto p-4 font-[poppins]">
@@ -203,11 +300,10 @@ export default function Payment({ userId }) {
         <div className="w-full md:w-2/3">
           <h2 className="text-xl font-bold mb-6">Billing details</h2>
 
-          {/* Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name <span className='text-red-500 font-bold'>*</span>
+                First Name <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="text"
@@ -221,7 +317,7 @@ export default function Payment({ userId }) {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name <span className='text-red-500 font-bold'>*</span>
+                Last Name <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="text"
@@ -248,7 +344,7 @@ export default function Payment({ userId }) {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Country <span className='text-red-500 font-bold'>*</span>
+                Country <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="text"
@@ -262,7 +358,7 @@ export default function Payment({ userId }) {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Province <span className='text-red-500 font-bold'>*</span>
+                Province <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="text"
@@ -276,7 +372,7 @@ export default function Payment({ userId }) {
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Street Address <span className='text-red-500 font-bold'>*</span>
+                Street Address <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="text"
@@ -290,7 +386,7 @@ export default function Payment({ userId }) {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Postcode <span className='text-red-500 font-bold'>*</span>
+                Postcode <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="text"
@@ -304,13 +400,14 @@ export default function Payment({ userId }) {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone <span className='text-red-500 font-bold'>*</span>
+                Phone <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
+                pattern="[0-9]{10,15}"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
@@ -318,7 +415,7 @@ export default function Payment({ userId }) {
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email <span className='text-red-500 font-bold'>*</span>
+                Email <span className="text-red-500 font-bold">*</span>
               </label>
               <input
                 type="email"
@@ -328,6 +425,24 @@ export default function Payment({ userId }) {
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                 required
               />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Shipping Method <span className="text-red-500 font-bold">*</span>
+              </label>
+              <select
+                name="shippingMethod"
+                value={formData.shippingMethod}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
+                required
+              >
+                <option value="Standard Shipping">Standard Shipping</option>
+                <option value="Regular Shipping">Regular Shipping</option>
+                <option value="Economy Shipping">Economy Shipping</option>
+                <option value="Next Day Delivery">Next Day Delivery</option>
+              </select>
             </div>
 
             <div className="md:col-span-2">
@@ -346,7 +461,6 @@ export default function Payment({ userId }) {
           </div>
         </div>
 
-        {/* Order Summary */}
         <div className="w-full mt-20 md:w-1/3">
           <div className="bg-white border border-red-200 shadow-lg rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-red-600 to-red-700 p-6">
@@ -372,22 +486,20 @@ export default function Payment({ userId }) {
                 {orderSummary.products && orderSummary.products.length > 0 ? (
                   orderSummary.products.flatMap((product, index) => {
                     const qty = product.quantity || 1;
-                    // Buat array sebanyak qty, untuk render item berulang
                     return Array.from({ length: qty }).map((_, i) => (
                       <div
                         key={`${product.productId || product._id || index}-${i}`}
                         className="flex justify-between items-center py-2"
                       >
-                        <span className="text-gray-800 font-medium ">
-                          {product.name || product.productName || `Product ${index + 1}`}
+                        <span className="text-gray-800 font-medium">
+                          {product.productName || product.name || `Product ${index + 1}`}
                         </span>
                         <span className="text-gray-900 font-semibold pl-2">
-                          ${(product.price || 0).toFixed(2)}
+                          ${(product.unitPrice || product.price || 0).toFixed(2)}
                         </span>
                       </div>
                     ));
                   })
-
                 ) : (
                   <p className="text-gray-500 text-center py-4">
                     No products in order
@@ -410,19 +522,13 @@ export default function Payment({ userId }) {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Store Pickup</span>
                   <span className="text-gray-800 font-medium">
-                    $
-                    {orderSummary.products.length === 0
-                      ? '0.00'
-                      : orderSummary.storePickup?.toFixed(2) || '5.00'}
+                    ${orderSummary.products.length === 0 ? '0.00' : orderSummary.storePickup?.toFixed(2) || '5.00'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Tax</span>
                   <span className="text-gray-800 font-medium">
-                    $
-                    {orderSummary.products.length === 0
-                      ? '0.00'
-                      : orderSummary.tax?.toFixed(2) || '10.00'}
+                    ${orderSummary.products.length === 0 ? '0.00' : orderSummary.tax?.toFixed(2) || '10.00'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -441,10 +547,7 @@ export default function Payment({ userId }) {
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">Total</span>
                   <span className="text-2xl font-bold">
-                    $
-                    {orderSummary.products.length === 0
-                      ? '0.00'
-                      : orderSummary.total?.toFixed(2) || '0.00'}
+                    ${orderSummary.products.length === 0 ? '0.00' : orderSummary.total?.toFixed(2) || '0.00'}
                   </span>
                 </div>
               </div>
@@ -455,13 +558,39 @@ export default function Payment({ userId }) {
                     Secure Payment
                   </span>
                 </div>
-                <p className="text-sm text-gray-700 mb-4 font-medium">
-                  {orderSummary.paymentMethod || 'Credit Card'}
-                </p>
+
+                <div className="flex items-center gap-3 flex-wrap">
+                  {paymentMethods.map((method) => (
+                    <div
+                      key={method.id}
+                      onClick={() => {
+                        setSelected(method.id);
+                        setFormData((prev) => ({
+                          ...prev,
+                          paymentMethod: method.name,
+                        }));
+                      }}
+                      className={`cursor-pointer bg-white p-3 border rounded-md shadow-sm w-15 h-12 flex items-center justify-center transition-all duration-200
+                        ${selected === method.id
+                          ? 'border-red-600 ring-2 ring-red-500'
+                          : 'border-gray-200 hover:border-red-400'
+                        }`}
+                    >
+                      <img
+                        src={method.logo}
+                        alt={method.name}
+                        className="max-h-6 object-contain"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="p-6 pt-0">
-              <button className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 rounded-lg text-center font-semibold uppercase tracking-wide transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+              <button
+                onClick={handleAddInvoice}
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 rounded-lg text-center font-semibold uppercase tracking-wide transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
                 Confirm Order
               </button>
             </div>

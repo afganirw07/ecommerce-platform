@@ -200,6 +200,17 @@ const ProductDetail = () => {
 
   const sizes = categorySizeMap[product.category] || [];
 
+   if (loading) {
+    return (
+      <div className="max-w-6xl mt-8 mx-auto p-4 font-[poppins] flex justify-center items-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading order data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 py-14 max-w-7xl mx-auto font-[Poppins]">
       <Toaster position="top-center" reverseOrder={false} />
