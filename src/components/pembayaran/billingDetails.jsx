@@ -3,6 +3,7 @@ import { seeAllPayment, deletePayment } from '../../service/payment';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UNSAFE_NavigationContext } from 'react-router-dom';
 import { addInvoice } from '../../service/invoice';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Payment({ userId }) {
   const navigation = useContext(UNSAFE_NavigationContext).navigator;
@@ -10,18 +11,18 @@ export default function Payment({ userId }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
-    country: "",
-    province: "",
-    streetAddress: "",
-    postcode: "",
-    phone: "",
-    email: "",
-    orderNotes: "",
-    shippingMethod: "Standard Shipping",
-    paymentMethod: "",
+    firstName: '',
+    lastName: '',
+    companyName: '',
+    country: '',
+    province: '',
+    streetAddress: '',
+    postcode: '',
+    phone: '',
+    email: '',
+    orderNotes: '',
+    shippingMethod: 'Standard Shipping',
+    paymentMethod: '',
   });
 
   const [orderSummary, setOrderSummary] = useState(null);
@@ -29,14 +30,7 @@ export default function Payment({ userId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selected, setSelected] = useState(null);
-
-  // Set email from user data
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user?.email) {
-      setFormData(prev => ({ ...prev, email: user.email }));
-    }
-  }, []);
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false); // State untuk kontrol konfirmasi
 
   // Fetch payment data
   useEffect(() => {
@@ -48,7 +42,6 @@ export default function Payment({ userId }) {
         if (!currentUserId) throw new Error('User ID not found');
 
         const data = await seeAllPayment(currentUserId);
-        console.log('API Data:', data);
 
         if (Array.isArray(data)) {
           setPaymentHistory(data);
@@ -62,7 +55,11 @@ export default function Payment({ userId }) {
               const items = payment.items || payment.products || [];
               if (Array.isArray(items)) {
                 items.forEach((item) => {
-                  if (item.productId && (item.name || item.productName) && item.price) {
+                  if (
+                    item.productId &&
+                    (item.name || item.productName) &&
+                    item.price
+                  ) {
                     allProducts.push({
                       ...item,
                       paymentId: payment._id,
@@ -77,7 +74,8 @@ export default function Payment({ userId }) {
 
             const storePickup = 5;
             const tax = 10;
-            const finalTotal = totalSubtotal - totalDiscount + storePickup + tax;
+            const finalTotal =
+              totalSubtotal - totalDiscount + storePickup + tax;
 
             setOrderSummary({
               products: allProducts,
@@ -152,10 +150,21 @@ export default function Payment({ userId }) {
 
   // Validate form data
   const validateForm = () => {
-    const requiredFields = ['firstName', 'lastName', 'country', 'province', 'streetAddress', 'postcode', 'phone', 'email'];
+    const requiredFields = [
+      'firstName',
+      'lastName',
+      'country',
+      'province',
+      'streetAddress',
+      'postcode',
+      'phone',
+      'email',
+    ];
     for (const field of requiredFields) {
       if (!formData[field]) {
-        return `Please fill in ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`;
+        return `Please fill in ${field
+          .replace(/([A-Z])/g, ' $1')
+          .toLowerCase()}`;
       }
     }
     if (!/^[0-9]{10,15}$/.test(formData.phone)) {
@@ -167,17 +176,25 @@ export default function Payment({ userId }) {
     return null;
   };
 
-  // Add invoice
+  // Add invoice - Modified dengan konfirmasi dan state control
   const handleAddInvoice = async () => {
     const validationError = validateForm();
     if (validationError) {
-      alert(validationError);
+      toast.error(validationError);
       return;
     }
 
     if (!formData.paymentMethod) {
-      alert('Please select a payment method.');
+      toast.error('Please select a payment method.');
       return;
+    }
+
+    // Tambahkan konfirmasi sebelum proses order
+    const confirmOrder = window.confirm(
+      'Are you sure you want to confirm this order?'
+    );
+    if (!confirmOrder) {
+      return; // Batalkan jika user memilih "Cancel"
     }
 
     try {
@@ -198,13 +215,13 @@ export default function Payment({ userId }) {
         phone: formData.phone,
         email: formData.email,
         orderNotes: formData.orderNotes,
-        items: orderSummary.products.map(product => ({
+        items: orderSummary.products.map((product) => ({
           productId: product.productId || product._id,
           productName: product.name || product.productName || 'Unknown Product',
           size: product.size || 'Default',
           quantity: product.quantity || 1,
           unitPrice: product.price || 0,
-          totalPrice: (product.price || 0) * (product.quantity || 1)
+          totalPrice: (product.price || 0) * (product.quantity || 1),
         })),
         subtotalProduct: orderSummary.subtotalProduct || 0,
         discount: orderSummary.discount || 0,
@@ -212,25 +229,52 @@ export default function Payment({ userId }) {
         paymentMethod: formData.paymentMethod,
       };
 
-      console.log('Sending invoiceData:', invoiceData);
-
       const response = await addInvoice(currentUserId, invoiceData);
       console.log('Invoice added successfully:', response);
-      alert('Order confirmed successfully!');
-      navigate('/invoice');
+      toast.success('Order confirmed successfully!');
+
+      // Set flag bahwa order sudah dikonfirmasi
+      setIsOrderConfirmed(true);
+
+      // Hapus payment data sebelum navigasi
+      try {
+        await deletePayment(currentUserId);
+        console.log('Payment data cleared after successful order');
+      } catch (deleteErr) {
+        console.error('Failed to delete payment data:', deleteErr);
+      }
+
+      // Navigasi setelah delay singkat untuk memastikan state terupdate
+      setTimeout(() => {
+        navigate('/confirmations');
+      }, 100);
     } catch (err) {
       console.error('Error adding invoice:', err);
-      alert(`Failed to add invoice: ${err.message}`);
+      toast.error(`Failed to add invoice: ${err.message}`);
     }
   };
 
-  // Confirm dialog on leaving page
+  // Modified useEffect untuk konfirmasi leave page dengan state control
   useEffect(() => {
     const currentPath = location.pathname;
 
+    // Event listener untuk browser refresh/close
+    const handleBeforeUnload = (e) => {
+      if (!isOrderConfirmed) {
+        e.preventDefault();
+        e.returnValue = 'Want to leave this page?';
+        return 'Want to leave this page?';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup function untuk navigation
     return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+
       const nextPath = window.location.pathname;
-      if (currentPath !== nextPath) {
+      if (currentPath !== nextPath && !isOrderConfirmed) {
         const confirmLeave = window.confirm('Want to leave this page?');
         if (!confirmLeave) {
           navigate(currentPath);
@@ -243,13 +287,16 @@ export default function Payment({ userId }) {
                 console.log('All payments deleted on route change.');
               })
               .catch((err) => {
-                console.error('Failed to delete payments on route change:', err);
+                console.error(
+                  'Failed to delete payments on route change:',
+                  err
+                );
               });
           }
         }
       }
     };
-  }, [location, navigate, userId]);
+  }, [location, navigate, userId, isOrderConfirmed]); // Tambahkan isOrderConfirmed ke dependency
 
   if (loading) {
     return (
@@ -288,14 +335,30 @@ export default function Payment({ userId }) {
 
   // Payment methods
   const paymentMethods = [
-    { id: 'visa', name: 'Visa', logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa.svg' },
-    { id: 'mastercard', name: 'Mastercard', logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard.svg' },
-    { id: 'amex', name: 'Paypal', logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal.svg' },
-    { id: 'jcb', name: 'JCB', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/JCB_logo.svg/450px-JCB_logo.svg.png' },
+    {
+      id: 'visa',
+      name: 'Visa',
+      logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa.svg',
+    },
+    {
+      id: 'mastercard',
+      name: 'Mastercard',
+      logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard.svg',
+    },
+    {
+      id: 'amex',
+      name: 'Paypal',
+      logo: 'https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal.svg',
+    },
+    {
+      id: 'jcb',
+      name: 'JCB',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/JCB_logo.svg/450px-JCB_logo.svg.png',
+    },
   ];
-
   return (
     <div className="max-w-6xl mt-8 mx-auto p-4 font-[poppins]">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-2/3">
           <h2 className="text-xl font-bold mb-6">Billing details</h2>
@@ -429,7 +492,8 @@ export default function Payment({ userId }) {
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Shipping Method <span className="text-red-500 font-bold">*</span>
+                Shipping Method{' '}
+                <span className="text-red-500 font-bold">*</span>
               </label>
               <select
                 name="shippingMethod"
@@ -488,14 +552,19 @@ export default function Payment({ userId }) {
                     const qty = product.quantity || 1;
                     return Array.from({ length: qty }).map((_, i) => (
                       <div
-                        key={`${product.productId || product._id || index}-${i}`}
+                        key={`${
+                          product.productId || product._id || index
+                        }-${i}`}
                         className="flex justify-between items-center py-2"
                       >
                         <span className="text-gray-800 font-medium">
-                          {product.productName || product.name || `Product ${index + 1}`}
+                          {product.productName ||
+                            product.name ||
+                            `Product ${index + 1}`}
                         </span>
                         <span className="text-gray-900 font-semibold pl-2">
-                          ${(product.unitPrice || product.price || 0).toFixed(2)}
+                          $
+                          {(product.unitPrice || product.price || 0).toFixed(2)}
                         </span>
                       </div>
                     ));
@@ -522,13 +591,19 @@ export default function Payment({ userId }) {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Store Pickup</span>
                   <span className="text-gray-800 font-medium">
-                    ${orderSummary.products.length === 0 ? '0.00' : orderSummary.storePickup?.toFixed(2) || '5.00'}
+                    $
+                    {orderSummary.products.length === 0
+                      ? '0.00'
+                      : orderSummary.storePickup?.toFixed(2) || '5.00'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Tax</span>
                   <span className="text-gray-800 font-medium">
-                    ${orderSummary.products.length === 0 ? '0.00' : orderSummary.tax?.toFixed(2) || '10.00'}
+                    $
+                    {orderSummary.products.length === 0
+                      ? '0.00'
+                      : orderSummary.tax?.toFixed(2) || '10.00'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -547,7 +622,10 @@ export default function Payment({ userId }) {
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">Total</span>
                   <span className="text-2xl font-bold">
-                    ${orderSummary.products.length === 0 ? '0.00' : orderSummary.total?.toFixed(2) || '0.00'}
+                    $
+                    {orderSummary.products.length === 0
+                      ? '0.00'
+                      : orderSummary.total?.toFixed(2) || '0.00'}
                   </span>
                 </div>
               </div>
@@ -569,12 +647,16 @@ export default function Payment({ userId }) {
                           ...prev,
                           paymentMethod: method.name,
                         }));
+                        toast.success(
+                          `Payment method selected: ${method.name}`
+                        );
                       }}
                       className={`cursor-pointer bg-white p-3 border rounded-md shadow-sm w-15 h-12 flex items-center justify-center transition-all duration-200
-                        ${selected === method.id
-                          ? 'border-red-600 ring-2 ring-red-500'
-                          : 'border-gray-200 hover:border-red-400'
-                        }`}
+        ${
+          selected === method.id
+            ? 'border-red-600 ring-2 ring-red-500'
+            : 'border-gray-200 hover:border-red-400'
+        }`}
                     >
                       <img
                         src={method.logo}

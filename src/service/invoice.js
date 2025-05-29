@@ -9,3 +9,13 @@ export const addInvoice = async (userId, invoiceData) => {
     throw error;
   }
 }
+
+// delete invoice
+export const deleteInvoice = async (userId) => {
+  try {
+    const response = await axios.delete(`http://localhost:5000/api/invoice/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
