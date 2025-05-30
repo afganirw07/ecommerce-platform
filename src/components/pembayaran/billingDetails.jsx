@@ -230,7 +230,6 @@ export default function Payment({ userId }) {
       };
 
       const response = await addInvoice(currentUserId, invoiceData);
-      console.log('Invoice added successfully:', response);
       toast.success('Order confirmed successfully!');
 
       // Set flag bahwa order sudah dikonfirmasi
@@ -239,7 +238,6 @@ export default function Payment({ userId }) {
       // Hapus payment data sebelum navigasi
       try {
         await deletePayment(currentUserId);
-        console.log('Payment data cleared after successful order');
       } catch (deleteErr) {
         console.error('Failed to delete payment data:', deleteErr);
       }
@@ -671,7 +669,7 @@ export default function Payment({ userId }) {
             <div className="p-6 pt-0">
               <button
                 onClick={handleAddInvoice}
-                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 rounded-lg text-center font-semibold uppercase tracking-wide transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full cursor-pointer bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 rounded-lg text-center font-semibold uppercase tracking-wide transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Confirm Order
               </button>

@@ -19,3 +19,13 @@ export const deleteInvoice = async (userId) => {
     throw error;
   }
 }
+
+// get invoice
+export const getInvoice = async (userId) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/invoice/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
