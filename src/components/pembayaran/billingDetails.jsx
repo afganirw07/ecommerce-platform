@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { seeAllPayment, deletePayment } from '../../service/payment';
+import { validateCoupon } from "../../service/couponAPI";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UNSAFE_NavigationContext } from 'react-router-dom';
 import { addInvoice } from '../../service/invoice';
@@ -30,7 +31,67 @@ export default function Payment({ userId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selected, setSelected] = useState(null);
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false); // State untuk kontrol konfirmasi
+  
+  // Coupon states
+  const [voucherCode, setVoucherCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [discountType, setDiscountType] = useState(null);
+  const [message, setMessage] = useState("");
+  
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+
+  // Coupon functionality
+  const applyCoupon = async () => {
+    try {
+      const data = await validateCoupon(voucherCode);
+      setDiscount(data.discount);
+      setDiscountType(data.type);
+      setMessage(`Coupon applied successfully!`);
+      toast.success('Coupon applied successfully!');
+      
+      // Update order summary with new discount
+      if (orderSummary) {
+        const originalSubtotal = orderSummary.subtotalProduct || orderSummary.subtotal || 0;
+        let discountValue = 0;
+        
+        if (data.type === "percentage") {
+          discountValue = (originalSubtotal * data.discount) / 100;
+        } else if (data.type === "fixed") {
+          discountValue = data.discount;
+        }
+        
+        const storePickup = orderSummary.products.length === 0 ? 0 : (orderSummary.storePickup || 5);
+        const tax = orderSummary.products.length === 0 ? 0 : (orderSummary.tax || 10);
+        const newTotal = Math.max(originalSubtotal - discountValue + storePickup + tax, 0);
+        
+        setOrderSummary(prev => ({
+          ...prev,
+          discount: discountValue,
+          total: newTotal
+        }));
+      }
+    } catch (err) {
+      setDiscount(0);
+      setDiscountType(null);
+      setMessage('Coupon not found');
+      toast.error('Coupon not found');
+      console.log(err);
+      
+      // Reset discount in order summary
+      if (orderSummary) {
+        const originalSubtotal = orderSummary.subtotalProduct || orderSummary.subtotal || 0;
+        const storePickup = orderSummary.products.length === 0 ? 0 : (orderSummary.storePickup || 5);
+        const tax = orderSummary.products.length === 0 ? 0 : (orderSummary.tax || 10);
+        const newTotal = Math.max(originalSubtotal + storePickup + tax, 0);
+        
+        setOrderSummary(prev => ({
+          ...prev,
+          discount: 0,
+          total: newTotal
+        }));
+      }
+    }
+  };
 
   // Fetch payment data
   useEffect(() => {
@@ -74,8 +135,7 @@ export default function Payment({ userId }) {
 
             const storePickup = 5;
             const tax = 10;
-            const finalTotal =
-              totalSubtotal - totalDiscount + storePickup + tax;
+            const finalTotal = totalSubtotal - totalDiscount + storePickup + tax;
 
             setOrderSummary({
               products: allProducts,
@@ -294,7 +354,7 @@ export default function Payment({ userId }) {
         }
       }
     };
-  }, [location, navigate, userId, isOrderConfirmed]); // Tambahkan isOrderConfirmed ke dependency
+  }, [location, navigate, userId, isOrderConfirmed]);
 
   if (loading) {
     return (
@@ -354,11 +414,12 @@ export default function Payment({ userId }) {
       logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/JCB_logo.svg/450px-JCB_logo.svg.png',
     },
   ];
+
   return (
     <div className="max-w-6xl mt-8 mx-auto p-4 font-[poppins]">
       <Toaster position="top-center" reverseOrder={false} />
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="w-full md:w-2/3">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="w-full lg:w-2/3">
           <h2 className="text-xl font-bold mb-6">Billing details</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -523,7 +584,7 @@ export default function Payment({ userId }) {
           </div>
         </div>
 
-        <div className="w-full mt-20 md:w-1/3">
+        <div className="w-full lg:w-1/3">
           <div className="bg-white border border-red-200 shadow-lg rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-red-600 to-red-700 p-6">
               <h2 className="text-xl font-bold text-white tracking-wide">
@@ -627,7 +688,35 @@ export default function Payment({ userId }) {
                   </span>
                 </div>
               </div>
-              <div className="mt-8 p-4 bg-red-50 rounded-lg border border-red-100">
+              
+              {/* Coupon Section - Moved here */}
+              <div className="mt-6 rounded-lg border border-red-200 p-4 shadow-md bg-red-50">
+                <label htmlFor="voucher" className="mb-2 block text-sm font-medium ">
+                  Do you have a voucher or gift card?
+                </label>
+                <input
+                  type="text"
+                  id="voucher"
+                  value={voucherCode}
+                  onChange={(e) => setVoucherCode(e.target.value)}
+                  className="block w-full rounded-md border border-red-300 bg-white p-2.5 text-sm text-gray-800 focus:ring-red-500 focus:border-red-500"
+                  placeholder="Voucher Code"
+                />
+                <button
+                  type="button"
+                  onClick={applyCoupon}
+                  className="mt-3 w-full cursor-pointer rounded-lg bg-red-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition"
+                >
+                  Apply Code
+                </button>
+                {message && (
+                  <p className={`mt-2 text-sm ${message.includes('successfully') ? 'text-green-700' : 'text-red-700'}`}>
+                    {message}
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-100">
                 <div className="flex items-center mb-4">
                   <div className="w-3 h-3 rounded-full bg-red-500 mr-3"></div>
                   <span className="text-sm font-semibold text-red-800">
