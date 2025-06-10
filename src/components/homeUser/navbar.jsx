@@ -11,15 +11,22 @@ import {
     FiInfo, 
     FiHelpCircle 
 } from 'react-icons/fi';
-
-
-
-
 import Logo from '../../../public/logo.svg';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim() !== '') {
+        navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        setSearchQuery('');
+    }
+};
+
 
     const handleCartClick = () => {
         navigate('/cart');
@@ -45,15 +52,18 @@ const Navbar = () => {
 
                     {/* Search */}
                     <div className="hidden md:flex flex-1 mx-10">
-                        <div className="relative w-full">
-                            <FiSearch className="absolute left-3 top-3 text-gray-800" />
-                            <input
-                                type="text"
-                                placeholder="Search for brand, color, etc."
-                                className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-100 focus:outline-none focus:ring focus:border-black transition duration-300"
-                            />
-                        </div>
-                    </div>
+    <form onSubmit={handleSearchSubmit} className="relative w-full">
+        <FiSearch className="absolute left-3 top-3 text-gray-800" />
+        <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search for brand, color, etc."
+            className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-100 focus:outline-none focus:ring focus:border-black transition duration-300"
+        />
+    </form>
+</div>
+
 
                     {/* News section */}
                     <div className="hidden md:flex items-center ml-1 mr-3">
@@ -102,14 +112,17 @@ const Navbar = () => {
                 {/* Mobile Menu */}
                 {isOpen && (
                     <div className="md:hidden mt-3 space-y-4">
-                        <div className="relative w-full">
-                            <FiSearch className="absolute left-4 top-3 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                className="w-full pl-10 pr-4 py-2 border rounded-md"
-                            />
-                        </div>
+                       <form onSubmit={handleSearchSubmit} className="relative w-full">
+    <FiSearch className="absolute left-4 top-3 text-gray-400" />
+    <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search..."
+        className="w-full pl-10 pr-4 py-2 border rounded-md"
+    />
+</form>
+
                        <div className="flex flex-col space-y-3 font-[poppins] text-base text-gray-700 px-2">
     <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
         <FiHome className="text-lg" />

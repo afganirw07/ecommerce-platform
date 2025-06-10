@@ -12,6 +12,7 @@ import Wishlist from './pages/wishlist';
 import './index.css';
 import Pembayaran from './pages/pembayaran';
 import Confirmations from './pages/afterPay';
+import SearchPage from './pages/searchPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/" element={<LandingPages />} />
       <Route path="/login" element={<LoginUser />} />
       <Route path="/register" element={<RegisterUser />} />
+      <Route path="/search" element={<SearchPage />} />
       <Route path="/product/:id" element={<DetailProducts />} />
 
       {/* protect */}
