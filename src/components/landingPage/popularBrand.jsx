@@ -19,13 +19,6 @@ const PopularBrand = () => {
           <h1 className="font-[poppins] text-lg font-semibold mb-3 mt-3 inline-flex items-center">
             Popular Brand
           </h1>
-          <p className="font-[poppins] text-red-600 inline-flex items-center cursor-pointer ">
-            See All
-            <ArrowForwardIosIcon
-              className="text-red-600 ml-2"
-              sx={{ fontSize: 12 }}
-            />
-          </p>
         </div>
 
         {/* baguan gmabr */}

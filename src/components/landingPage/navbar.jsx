@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Logo from '../../../public/logo.svg';
 import { FiMenu, FiX, FiSearch, FiShoppingCart } from 'react-icons/fi';
+import { FiFileText, FiInfo, FiHelpCircle } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -112,35 +113,47 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* mobile menu */}
-      {isOpen && (
-        <div className="md:hidden mt-3 space-y-4">
-          <div className="relative w-full">
-            <FiSearch className="absolute left-4 top-3 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full pl-10 pr-4 py-2 border rounded-md"
-            />
-          </div>
-          <div className="flex flex-col space-y-2  font-[poppins] text-sm">
-            <a href="#">News</a>
-            <a href="#">About</a>
-            <a href="#">Help</a>
-            <button
-              onClick={handleLoginOnclick}
-              className="w-full border border-black rounded-full py-2"
-            >
-              Login
-            </button>
-            <button
-              onClick={handleRegisOnclick}
-              className="w-full bg-black text-white rounded-full py-2"
-            >
-              Sign Up
-            </button>
-          </div>
-        </div>
+     {/* mobile menu */}
+{isOpen && (
+  <div className="md:hidden mt-5 space-y-5 px-4">
+    {/* Search */}
+    <div className="relative w-full">
+      <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+      <input
+        type="text"
+        placeholder="Search..."
+        className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+      />
+    </div>
+
+    {/* Menu Links */}
+    <div className="flex flex-col space-y-3 font-[poppins] text-base text-gray-700">
+      <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+        <FiFileText className="text-[18px]" /> News
+      </a>
+      <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+        <FiInfo className="text-[18px]" /> About
+      </a>
+      <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+        <FiHelpCircle className="text-[18px]" /> Help
+      </a>
+
+      {/* Buttons */}
+      <button
+        onClick={handleLoginOnclick}
+        className="w-full border border-black rounded-full py-2 font-medium hover:bg-gray-100 active:bg-gray-200 transition-colors"
+      >
+        Login
+      </button>
+      <button
+        onClick={handleRegisOnclick}
+        className="w-full bg-black text-white rounded-full py-2 font-medium hover:opacity-90 active:opacity-80 transition-opacity"
+      >
+        Sign Up
+      </button>
+    </div>
+  </div>
+
       )}
     </nav>
     </>
