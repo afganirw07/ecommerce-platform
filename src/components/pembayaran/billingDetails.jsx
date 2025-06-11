@@ -689,8 +689,8 @@ export default function Payment({ userId }) {
                 </div>
               </div>
               
-              {/* Coupon Section - Moved here */}
-              <div className="mt-6 rounded-lg border border-red-200 p-4 shadow-md bg-red-50">
+              {/* Coupon Section*/}
+              <div className="mt-6 rounded-lg border border-red-200 p-4 bg-red-50">
                 <label htmlFor="voucher" className="mb-2 block text-sm font-medium ">
                   Do you have a voucher or gift card?
                 </label>

@@ -8,6 +8,7 @@ import TrendingSneaker from '../components/landingPage/trendingSneaker';
 import FeaturedApparel from '../components/landingPage/featuredApparel';
 import BannerProduct from '../components/landingPage/bannerProduct';
 import Accessories from '../components/landingPage/accessories';
+import SecondBanner from '../components/landingPage/secondBanner';
 import Favorit from '../components/landingPage/seasonFavorit';
 import NewLauching from '../components/landingPage/newLauching';
 import ShoesProduct from '../components/landingPage/shoesProduct';
@@ -46,7 +47,7 @@ const LandingPages = () => {
       <NewLauching />
       <ShoesProduct />
       <ReleaseDate />
-      <BannerFirst />
+      <SecondBanner />
       <PickForHer />
       <ForKidsproduct />
       <Footer />

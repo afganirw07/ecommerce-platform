@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 // Daftar gambar
 const images = [
-  'https://hypesneakerid.com/wp-content/uploads/2025/05/BANNER-PROMOTIONS.png',
-  'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/sneakers-mockup-banner-design-template-a168837d88ce417842e272c989245883_screen.jpg',
-  'https://img.freepik.com/premium-vector/discount-social-media-ramadan-banner-sale_92715-76.jpg',
+  'https://img.freepik.com/premium-psd/psd-best-shoes-sale-black-red-advertisement-social-media-facebook-cover-banner-template_797457-198.jpg',
+  'https://i.pinimg.com/736x/29/84/08/2984084e03fb883ceb36224ae5e9335b.jpg',
+  'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/shoes-sale-banner-design-template-527235d9c5291603dfec6898f99f7376_screen.jpg',
 ];
 
 // bagian bulat bulat
-const BannerFirst = () => {
+const secondBanner = () => {
   const [current, setCurrent] = useState(0);
   const length = images.length;
 
@@ -23,7 +23,7 @@ const BannerFirst = () => {
   return (
     <>
       {/* wrapper */}
-      <div className="px-4 pb-4 sm:px-7 lg:px-30">
+      <div className="px-4 sm:px-7 lg:px-30">
         <div className="relative w-full mt-5 h-48 sm:h-60 md:h-72 lg:h-80 xl:h-[230px] mx-auto overflow-hidden rounded-2xl shadow-lg ">
           {/* banner */}
           <div
@@ -58,4 +58,4 @@ const BannerFirst = () => {
   );
 };
 
-export default BannerFirst;
+export default secondBanner;

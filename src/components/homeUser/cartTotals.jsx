@@ -1,49 +1,22 @@
-import React, { useState } from "react";
-import { validateCoupon } from "../../service/couponAPI";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { addToBuy } from '../../service/payment';
 import toast, { Toaster } from 'react-hot-toast';
-import { deleteCart} from "../../service/cartAPI";
+import { deleteCart } from "../../service/cartAPI";
 
 const CartTotals = ({ cartItems, calculateTotal }) => {
   const storePickup = 5;
   const tax = 10;
 
-  const [voucherCode, setVoucherCode] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [discountType, setDiscountType] = useState(null);
-  const [message, setMessage] = useState("");
-
   const originalTotal = typeof calculateTotal === "function" ? calculateTotal() : 0;
   const safeOriginalTotal = isNaN(originalTotal) ? 0 : originalTotal;
 
-  let discountValue = 0;
-  if (discountType === "percentage") {
-    discountValue = (safeOriginalTotal * discount) / 100;
-  } else if (discountType === "fixed") {
-    discountValue = discount;
-  }
-
-  const finalTotal = Math.max(safeOriginalTotal - discountValue + storePickup + tax, 0);
+  const finalTotal = Math.max(safeOriginalTotal + storePickup + tax, 0);
 
   const navigate = useNavigate();
 
   const handleToHome = () => {
     navigate("/");
-  };
-
-  const applyCoupon = async () => {
-    try {
-      const data = await validateCoupon(voucherCode);
-      setDiscount(data.discount);
-      setDiscountType(data.type);
-      setMessage(`Coupon applied successfully!`);
-    } catch (err) {
-      setDiscount(0);
-      setDiscountType(null);
-      setMessage('Coupon not found');
-      console.log(err);
-    }
   };
 
   const handleBuyNow = async () => {
@@ -70,12 +43,12 @@ const CartTotals = ({ cartItems, calculateTotal }) => {
     }));
 
     const subtotal = products.reduce((acc, p) => acc + p.price * p.quantity, 0);
-    const total = subtotal - discountValue + storePickup + tax;
+    const total = subtotal + storePickup + tax;
 
     const orderData = {
       products,
       subtotal,
-      discount: discountValue,
+      discount: 0,
       pickup: storePickup,
       shipping: {
         method: 'Express Shipping',
@@ -96,7 +69,6 @@ const CartTotals = ({ cartItems, calculateTotal }) => {
     }
   };
 
-
   return (
     <div className="w-full max-w-md lg:max-w-xs xl:max-w-sm 2xl:max-w-md ml-auto space-y-6">
       <Toaster position="top-center" reverseOrder={false} />
@@ -108,10 +80,6 @@ const CartTotals = ({ cartItems, calculateTotal }) => {
           <dl className="flex items-center justify-between text-sm sm:text-base">
             <dt className="text-gray-600">Original Price</dt>
             <dd className="font-medium text-gray-800">${originalTotal.toFixed(2)}</dd>
-          </dl>
-          <dl className="flex items-center justify-between text-sm sm:text-base">
-            <dt className="text-gray-600">Discount</dt>
-            <dd className="font-medium text-red-500">-${discountValue.toFixed(2)}</dd>
           </dl>
           <dl className="flex items-center justify-between text-sm sm:text-base">
             <dt className="text-gray-600">Store Pickup</dt>
@@ -159,30 +127,6 @@ const CartTotals = ({ cartItems, calculateTotal }) => {
             </svg>
           </a>
         </div>
-      </div>
-
-      <div className="rounded-lg border border-gray-300 p-4 shadow-md bg-white">
-        <label htmlFor="voucher" className="mb-2 block text-sm font-medium text-gray-800">
-          Do you have a voucher or gift card?
-        </label>
-        <input
-          type="text"
-          id="voucher"
-          value={voucherCode}
-          onChange={(e) => setVoucherCode(e.target.value)}
-          className="block w-full rounded-md border border-gray-300 bg-gray-100 p-2.5 text-sm text-gray-800 focus:ring-red-500 focus:border-red-500"
-          placeholder="Voucher Code"
-        />
-        <button
-          type="button"
-          onClick={applyCoupon}
-          className="mt-4 w-full cursor-pointer rounded-lg bg-red-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition"
-        >
-          Apply Code
-        </button>
-        {message && (
-          <p className="mt-2 text-sm text-red-700">{message}</p>
-        )}
       </div>
     </div>
   );

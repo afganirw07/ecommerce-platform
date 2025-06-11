@@ -50,7 +50,7 @@ const Cart = () => {
 );
 
     } catch (error) {
-      console.error('Gagal menghapus item:', error);
+      console.error('Error deleting item from cart:', error);
     }
   };
 
@@ -92,7 +92,7 @@ const Cart = () => {
         </div>
         
         {cartItems.length === 0 ? (
-  <div className="text-center text-gray-600 py-10 text-lg font-bold">
+  <div className="col-span-5 text-center text-gray-500 text-lg font-medium py-10">
     You have no items in cart
   </div>
 ) : (
