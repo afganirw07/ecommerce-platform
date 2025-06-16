@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Package, Mail, CreditCard, MapPin, Phone, User, Calendar, ShoppingBag, ArrowRight } from 'lucide-react';
 import { deleteInvoice, getInvoice } from '../../service/invoice';
 
+
 const Confirmation = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
@@ -21,7 +22,13 @@ const Confirmation = () => {
                 if (!currentUserId) return;
 
                 const data = await getInvoice(currentUserId);
-                setInvoiceData(data[0]); // asumsi data adalah array, ambil yang pertama
+
+                if (Array.isArray(data) && data.length > 0) {
+                    setInvoiceData(data[0]); 
+                } else {
+                    toast.error('No invoice found');
+                }
+
             } catch (error) {
                 console.error("Failed to get invoice:", error);
             }
@@ -151,11 +158,11 @@ const Confirmation = () => {
                         <div class="invoice-header">
                             <h1>INVOICE</h1>
                             <p>ReKicks - Style in Every Step</p>
-                            <p>Generated on ${new Date().toLocaleDateString('id-ID', { 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
-                            })}</p>
+                            <p>Generated on ${new Date().toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })}</p>
                         </div>
                         
                         <div class="invoice-content">
@@ -217,6 +224,10 @@ const Confirmation = () => {
                                             <span class="info-label">${item.productId.title || 'Product'}</span>
                                             <span class="info-value">Qty: ${item.quantity || 1} - $${item.unitPrice || 0}</span>
                                         </div>
+                                         <div class="info-item">
+                                    <span class="info-label">Notes:</span>
+                                    <span class="info-value">${invoiceData.orderNotes}</span>
+                                </div>
                                     `).join('')}
                                     <div class="info-item" style="border-top: 2px solid #e53e3e; margin-top: 15px; padding-top: 15px; font-weight: bold;">
                                         <span class="info-label">Total:</span>
@@ -242,7 +253,7 @@ const Confirmation = () => {
                 </body>
                 </html>
             `;
-            
+
             const printWindow = window.open('', '_blank');
             printWindow.document.write(invoiceHTML);
             printWindow.document.close();
@@ -273,19 +284,11 @@ const Confirmation = () => {
 
     return (
         <div className="min-h-screen bg-white relative overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-20 left-10 w-20 h-20 bg-rose-200 rounded-full opacity-20 animate-bounce"></div>
-                <div className="absolute top-40 right-20 w-16 h-16 bg-red-200 rounded-full opacity-20 animate-pulse"></div>
-                <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-pink-200 rounded-full opacity-20 animate-bounce delay-300"></div>
-                <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-rose-300 rounded-full opacity-20 animate-pulse delay-500"></div>
-            </div>
-
             <div className="relative z-10 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-32 py-12">
                 {/* Success Animation */}
-                <div className={`text-center mb-12 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                <div className={`text-center mb-12 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
                     <div className="relative inline-block mb-6">
-                        <div className="w-24 h-24 bg-gradient-to-r from-red-500 to-rose-600 rounded-full flex items-center justify-center shadow-lg shadow-red-200 animate-pulse">
+                        <div className="w-24 h-24 bg-gradient-to-r from-red-500 to-rose-600 rounded-full flex items-center justify-center  animate-pulse">
                             <CheckCircle className="w-12 h-12 text-white" />
                         </div>
                         <div className="absolute -inset-2 bg-gradient-to-r from-red-500 to-rose-600 rounded-full opacity-20 animate-ping"></div>
@@ -300,8 +303,8 @@ const Confirmation = () => {
                 </div>
 
                 {/* Order Progress */}
-                <div className={`mb-12 transform transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-                    <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20">
+                <div className={`mb-12 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                    <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-md border border-white/20">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Order Status</h3>
                         <div className="flex justify-between items-center">
                             {orderSteps.map((step, index) => {
@@ -314,8 +317,8 @@ const Confirmation = () => {
                                         {!isLast && (
                                             <div
                                                 className={`absolute top-[35%] left-1/2 h-0.5 z-0 transition-all duration-500 ${index === 0
-                                                        ? 'bg-gradient-to-r from-red-500 to-rose-600'
-                                                        : 'bg-gray-200'
+                                                    ? 'bg-gradient-to-r from-red-500 to-rose-600'
+                                                    : 'bg-gray-200'
                                                     }`}
                                                 style={{ width: '100%', transform: 'translateY(-50%)' }}
                                             />
@@ -324,8 +327,8 @@ const Confirmation = () => {
                                         {/* Lingkaran step */}
                                         <div
                                             className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${step.active
-                                                    ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg'
-                                                    : 'bg-gray-200 text-gray-400'
+                                                ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-md'
+                                                : 'bg-gray-200 text-gray-400'
                                                 }`}
                                         >
                                             <Icon className="w-6 h-6" />
@@ -346,15 +349,15 @@ const Confirmation = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-12 transform transition-all duration-1000 delay-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-                    <button onClick={handlePrintInvoice} className="group cursor-pointer bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-red-200 hover:shadow-xl hover:shadow-red-300 transform hover:-translate-y-1">
+                <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-12 transform${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                    <button onClick={handlePrintInvoice} className="group cursor-pointer bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-md shadow-red-200 hover:shadow-md hover:shadow-red-300 transform hover:-translate-y-1">
                         <span className="flex items-center justify-center gap-2">
                             <Package className="w-5 h-5" />
                             Print Invoice
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </span>
                     </button>
-                    <button onClick={handleDeleteInvoice} className="group bg-white hover:bg-gray-50 text-gray-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl border border-gray-200 transform hover:-translate-y-1">
+                    <button onClick={handleDeleteInvoice} className="group bg-white hover:bg-gray-50 text-gray-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-md hover:shadow-md border border-gray-200 transform hover:-translate-y-1">
                         <span className="flex cursor-pointer items-center justify-center gap-2">
                             <ShoppingBag className="w-5 h-5" />
                             Continue Shopping
@@ -364,8 +367,8 @@ const Confirmation = () => {
                 </div>
 
                 {/* Order Details Card */}
-                <div className={`max-w-7xl mx-auto transform transition-all duration-1000 delay-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-                    <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+                <div className={`max-w-7xl mx-auto transform  ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                    <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-md border border-white/20 overflow-hidden">
                         <div className="bg-gradient-to-r from-red-500 to-rose-600 p-6">
                             <h2 className="text-xl font-bold text-white flex items-center gap-2">
                                 <Package className="w-6 h-6" />
@@ -387,7 +390,7 @@ const Confirmation = () => {
                                 return (
                                     <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 rounded-lg px-2 transition-colors duration-200">
                                         <div className="flex items-center gap-3">
-                                            <div className={`w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center ${item.color}`}>
+                                            <div className={` flex items-center justify-center ${item.color}`}>
                                                 <Icon className="w-4 h-4" />
                                             </div>
                                             <span className="text-gray-600 font-medium">{item.label}</span>
@@ -396,25 +399,10 @@ const Confirmation = () => {
                                     </div>
                                 );
                             })
-                            : (
-                                <p className="text-center py-6 text-gray-400">Loading invoice data...</p>
-                            )}
+                                : (
+                                    <p className="text-center py-6 text-gray-400">Loading invoice data...</p>
+                                )}
                         </div>
-                    </div>
-                </div>
-
-                {/* Support Section */}
-                <div className={`text-center mt-12 transform transition-all duration-1000 delay-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-                    <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 max-w-md mx-auto">
-                        <Mail className="w-8 h-8 text-red-600 mx-auto mb-3" />
-                        <p className="text-gray-600 mb-3">Need help with your order?</p>
-                        <a
-                            href="mailto:support@company.com"
-                            className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-semibold transition-colors duration-200 group"
-                        >
-                            ReKicks@gmail.com
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </a>
                     </div>
                 </div>
             </div>

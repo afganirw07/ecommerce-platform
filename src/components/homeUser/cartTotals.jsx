@@ -73,7 +73,7 @@ const CartTotals = ({ cartItems, calculateTotal }) => {
     <div className="w-full max-w-md lg:max-w-xs xl:max-w-sm 2xl:max-w-md ml-auto space-y-6">
       <Toaster position="top-center" reverseOrder={false} />
 
-      <div className="space-y-4 rounded-lg border border-gray-300 p-4 shadow-md bg-white">
+      <div className="space-y-4 rounded-lg border border-gray-300 p-4 bg-white">
         <p className="text-xl font-semibold text-gray-800">Cart Totals</p>
 
         <div className="space-y-4">

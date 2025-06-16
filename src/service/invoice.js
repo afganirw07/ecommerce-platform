@@ -11,7 +11,7 @@ export const addInvoice = async (userId, invoiceData) => {
 }
 
 // delete invoice
-export const deleteInvoice = async (userId) => {
+export const deleteInvoice = async (userId, invoiceData) => {
   try {
     const response = await axios.delete(`http://localhost:5000/api/invoice/user/${userId}`);
     return response.data;
