@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Package, Mail, CreditCard, MapPin, Phone, User, Calendar, ShoppingBag, ArrowRight } from 'lucide-react';
-import { deleteInvoice, getInvoice } from '../../service/invoice';
+import { getInvoice } from '../../service/invoice';
 
 
 const Confirmation = () => {
@@ -271,15 +271,8 @@ const Confirmation = () => {
 
     // handle delete invoice
     const navigate = useNavigate();
-    const handleDeleteInvoice = async () => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const currentUserId = user?.id || user?._id;
-        try {
-            await deleteInvoice(currentUserId);
-            navigate('/');
-        } catch (error) {
-            console.error("Error deleting invoice:", error);
-        }
+    const handleHome = async () => {
+        navigate('/');
     }
 
     return (
@@ -357,7 +350,7 @@ const Confirmation = () => {
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </span>
                     </button>
-                    <button onClick={handleDeleteInvoice} className="group bg-white hover:bg-gray-50 text-gray-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-md hover:shadow-md border border-gray-200 transform hover:-translate-y-1">
+                    <button onClick={handleHome} className="group bg-white hover:bg-gray-50 text-gray-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-md hover:shadow-md border border-gray-200 transform hover:-translate-y-1">
                         <span className="flex cursor-pointer items-center justify-center gap-2">
                             <ShoppingBag className="w-5 h-5" />
                             Continue Shopping
