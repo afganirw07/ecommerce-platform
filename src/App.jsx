@@ -13,6 +13,7 @@ import './index.css';
 import Pembayaran from './pages/pembayaran';
 import Confirmations from './pages/afterPay';
 import SearchPage from './pages/searchPage';
+import ProfilePage from './pages/profilePage'
 
 function App() {
   return (
@@ -46,6 +47,14 @@ function App() {
       element= {
         <ProtectedRoute>
           <Wishlist />
+        </ProtectedRoute>
+      }
+      />
+      <Route
+      path='/profile'
+      element= {
+        <ProtectedRoute>
+          <ProfilePage />
         </ProtectedRoute>
       }
       />

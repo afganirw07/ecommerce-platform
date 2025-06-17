@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-    FiMenu, 
-    FiX, 
-    FiSearch, 
-    FiShoppingCart, 
-    FiUser, 
-    FiHeart, 
-    FiHome, 
-    FiInfo, 
-    FiHelpCircle 
+import {
+    FiMenu,
+    FiX,
+    FiSearch,
+    FiShoppingCart,
+    FiUser,
+    FiHeart,
+    FiHome,
+    FiInfo,
+    FiHelpCircle
 } from 'react-icons/fi';
 import Logo from '../../../public/logo.svg';
+
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,13 +20,13 @@ const Navbar = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
 
-const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim() !== '') {
-        navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-        setSearchQuery('');
-    }
-};
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim() !== '') {
+            navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+            setSearchQuery('');
+        }
+    };
 
 
     const handleCartClick = () => {
@@ -35,6 +36,9 @@ const handleSearchSubmit = (e) => {
     const handleFavoritesClick = () => {
         navigate('/favorite');
     }
+    const handleProfileClick = () => {
+        navigate('/profile');
+    }
 
     // logo
     const handleLogoClick = () => {
@@ -43,7 +47,7 @@ const handleSearchSubmit = (e) => {
 
     return (
         <>
-            <nav className="sticky top-0 z-50 px-10 py-3 mt-3 border-b border-gray-300 bg-white pb-7">
+            <nav className="sticky top-0 z-50 px-7 md:px-10 py-3 mt-3 border-b border-gray-300 bg-white pb-7">
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <div className="w-32 md:w-40 md:ml-0 cursor-pointer" onClick={handleLogoClick}>
@@ -52,17 +56,17 @@ const handleSearchSubmit = (e) => {
 
                     {/* Search */}
                     <div className="hidden md:flex flex-1 mx-10">
-    <form onSubmit={handleSearchSubmit} className="relative w-full">
-        <FiSearch className="absolute left-3 top-3 text-gray-800" />
-        <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search for brand, color, etc."
-            className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-100 focus:outline-none focus:ring focus:border-black transition duration-300"
-        />
-    </form>
-</div>
+                        <form onSubmit={handleSearchSubmit} className="relative w-full">
+                            <FiSearch className="absolute left-3 top-3 text-gray-800" />
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search for brand, color, etc."
+                                className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-100 focus:outline-none focus:ring focus:border-black transition duration-300"
+                            />
+                        </form>
+                    </div>
 
 
                     {/* News section */}
@@ -90,7 +94,7 @@ const handleSearchSubmit = (e) => {
                             <FiHeart />
                         </button>
 
-                        <button className="text-xl cursor-pointer" title="Profile">
+                        <button onClick={handleProfileClick} className="text-xl cursor-pointer" title="Profile">
                             <FiUser />
                         </button>
                     </div>
@@ -112,35 +116,35 @@ const handleSearchSubmit = (e) => {
                 {/* Mobile Menu */}
                 {isOpen && (
                     <div className="md:hidden mt-3 space-y-4">
-                       <form onSubmit={handleSearchSubmit} className="relative w-full">
-    <FiSearch className="absolute left-4 top-3 text-gray-400" />
-    <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search..."
-        className="w-full pl-10 pr-4 py-2 border rounded-md"
-    />
-</form>
+                        <form onSubmit={handleSearchSubmit} className="relative w-full">
+                            <FiSearch className="absolute left-4 top-3 text-gray-400" />
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search..."
+                                className="w-full pl-10 pr-4 py-2 border rounded-md"
+                            />
+                        </form>
 
-                       <div className="flex flex-col space-y-3 font-[poppins] text-base text-gray-700 px-2">
-    <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
-        <FiHome className="text-lg" />
-        News
-    </a>
-    <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
-        <FiInfo className="text-lg" />
-        About
-    </a>
-    <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
-        <FiHelpCircle className="text-lg" />
-        Help
-    </a>
-    <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
-        <FiUser className="text-lg" />
-        Profile
-    </a>
-</div>
+                        <div className="flex flex-col space-y-3 font-[poppins] text-base text-gray-700 px-2">
+                            <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                                <FiHome className="text-lg" />
+                                News
+                            </a>
+                            <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                                <FiInfo className="text-lg" />
+                                About
+                            </a>
+                            <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                                <FiHelpCircle className="text-lg" />
+                                Help
+                            </a>
+                            <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                                <FiUser className="text-lg" />
+                                Profile
+                            </a>
+                        </div>
 
                     </div>
                 )}
