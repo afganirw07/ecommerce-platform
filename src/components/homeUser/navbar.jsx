@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     FiMenu,
@@ -13,21 +13,144 @@ import {
 } from 'react-icons/fi';
 import Logo from '../../../public/logo.svg';
 
-
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
-
     const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    const [isLoading, setIsLoading] = useState(false);
+    
+    const navigate = useNavigate();
+    const searchRef = useRef(null);
+    const suggestionsRef = useRef(null);
 
+    // Debounce untuk mengurangi jumlah API calls
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (searchQuery.trim().length > 0) {
+                fetchSuggestions(searchQuery.trim());
+            } else {
+                setSuggestions([]);
+                setShowSuggestions(false);
+            }
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [searchQuery]);
+
+    // Fetch suggestions dari API
+    const fetchSuggestions = async (query) => {
+        try {
+            setIsLoading(true);
+            const response = await fetch(`http://localhost:5000/api/products?search=${encodeURIComponent(query)}`);
+            
+            if (response.ok) {
+                const products = await response.json();
+                
+                // Ekstrak suggestions dari products (name, title, category)
+                const uniqueSuggestions = new Set();
+                
+                products.forEach(product => {
+                    if (product.name && product.name.toLowerCase().includes(query.toLowerCase())) {
+                        uniqueSuggestions.add(product.name);
+                    }
+                    if (product.title && product.title.toLowerCase().includes(query.toLowerCase())) {
+                        uniqueSuggestions.add(product.title);
+                    }
+                    if (product.category && product.category.toLowerCase().includes(query.toLowerCase())) {
+                        uniqueSuggestions.add(product.category);
+                    }
+                });
+
+                const suggestionArray = Array.from(uniqueSuggestions).slice(0, 8); 
+                setSuggestions(suggestionArray);
+                setShowSuggestions(suggestionArray.length > 0);
+            }
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            setSuggestions([]);
+            setShowSuggestions(false);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Handle keyboard navigation
+    const handleKeyDown = (e) => {
+        if (!showSuggestions) return;
+
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                setSelectedIndex(prev => 
+                    prev < suggestions.length - 1 ? prev + 1 : prev
+                );
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
+                    handleSuggestionClick(suggestions[selectedIndex]);
+                } else {
+                    handleSearchSubmit(e);
+                }
+                break;
+            case 'Escape':
+                setShowSuggestions(false);
+                setSelectedIndex(-1);
+                break;
+        }
+    };
+
+    // Handle suggestion click
+    const handleSuggestionClick = (suggestion) => {
+        setSearchQuery(suggestion);
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        navigate(`/search?q=${encodeURIComponent(suggestion)}`);
+    };
+
+    // Handle search submit
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchQuery.trim() !== '') {
             navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
             setSearchQuery('');
+            setShowSuggestions(false);
+            setSelectedIndex(-1);
         }
     };
 
+    // Handle input focus
+    const handleInputFocus = () => {
+        if (suggestions.length > 0) {
+            setShowSuggestions(true);
+        }
+    };
+
+    // Handle click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                searchRef.current && 
+                !searchRef.current.contains(event.target) &&
+                suggestionsRef.current &&
+                !suggestionsRef.current.contains(event.target)
+            ) {
+                setShowSuggestions(false);
+                setSelectedIndex(-1);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const handleCartClick = () => {
         navigate('/cart');
@@ -36,11 +159,11 @@ const Navbar = () => {
     const handleFavoritesClick = () => {
         navigate('/favorite');
     }
+
     const handleProfileClick = () => {
         navigate('/profile');
     }
 
-    // logo
     const handleLogoClick = () => {
         navigate('/');
     };
@@ -54,20 +177,57 @@ const Navbar = () => {
                         <img src={Logo} alt="Logo" className="w-full" />
                     </div>
 
-                    {/* Search */}
-                    <div className="hidden md:flex flex-1 mx-10">
+                    {/* Search - Desktop */}
+                    <div className="hidden md:flex flex-1 mx-10 relative">
                         <form onSubmit={handleSearchSubmit} className="relative w-full">
-                            <FiSearch className="absolute left-3 top-3 text-gray-800" />
+                            <FiSearch className="absolute left-3 top-3 text-gray-800 z-10" />
                             <input
+                                ref={searchRef}
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                onFocus={handleInputFocus}
                                 placeholder="Search for brand, color, etc."
                                 className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-100 focus:outline-none focus:ring focus:border-black transition duration-300"
+                                autoComplete="off"
                             />
                         </form>
-                    </div>
 
+                        {/* Suggestions Dropdown - Desktop */}
+                        {showSuggestions && (
+                            <div 
+                                ref={suggestionsRef}
+                                className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-60 overflow-y-auto z-50"
+                            >
+                                {isLoading ? (
+                                    <div className="px-4 py-3 text-gray-500 text-sm">
+                                        <div className="flex items-center">
+                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 mr-2"></div>
+                                            Searching...
+                                        </div>
+                                    </div>
+                                ) : (
+                                    suggestions.map((suggestion, index) => (
+                                        <div
+                                            key={index}
+                                            className={`px-4 py-3 cursor-pointer transition-colors duration-150 ${
+                                                index === selectedIndex 
+                                                    ? 'bg-blue-50 text-blue-700' 
+                                                    : 'hover:bg-gray-50'
+                                            }`}
+                                            onClick={() => handleSuggestionClick(suggestion)}
+                                        >
+                                            <div className="flex items-center">
+                                                <FiSearch className="text-gray-400 mr-3 text-sm" />
+                                                <span className="text-sm">{suggestion}</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
+                    </div>
 
                     {/* News section */}
                     <div className="hidden md:flex items-center ml-1 mr-3">
@@ -116,16 +276,52 @@ const Navbar = () => {
                 {/* Mobile Menu */}
                 {isOpen && (
                     <div className="md:hidden mt-3 space-y-4">
-                        <form onSubmit={handleSearchSubmit} className="relative w-full">
-                            <FiSearch className="absolute left-4 top-3 text-gray-400" />
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search..."
-                                className="w-full pl-10 pr-4 py-2 border rounded-md"
-                            />
-                        </form>
+                        <div className="relative">
+                            <form onSubmit={handleSearchSubmit} className="relative w-full">
+                                <FiSearch className="absolute left-4 top-3 text-gray-400" />
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    onFocus={handleInputFocus}
+                                    placeholder="Search..."
+                                    className="w-full pl-10 pr-4 py-2 border rounded-md"
+                                    autoComplete="off"
+                                />
+                            </form>
+
+                            {/* Suggestions Dropdown - Mobile */}
+                            {showSuggestions && (
+                                <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-48 overflow-y-auto z-50">
+                                    {isLoading ? (
+                                        <div className="px-4 py-3 text-gray-500 text-sm">
+                                            <div className="flex items-center">
+                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 mr-2"></div>
+                                                Searching...
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        suggestions.map((suggestion, index) => (
+                                            <div
+                                                key={index}
+                                                className={`px-4 py-3 cursor-pointer transition-colors duration-150 ${
+                                                    index === selectedIndex 
+                                                        ? 'bg-blue-50 text-blue-700' 
+                                                        : 'hover:bg-gray-50'
+                                                }`}
+                                                onClick={() => handleSuggestionClick(suggestion)}
+                                            >
+                                                <div className="flex items-center">
+                                                    <FiSearch className="text-gray-400 mr-3 text-sm" />
+                                                    <span className="text-sm">{suggestion}</span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            )}
+                        </div>
 
                         <div className="flex flex-col space-y-3 font-[poppins] text-base text-gray-700 px-2">
                             <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
@@ -140,16 +336,14 @@ const Navbar = () => {
                                 <FiHelpCircle className="text-lg" />
                                 Help
                             </a>
-                            <a href="#" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                            <a href="/profile" className="flex items-center gap-3 py-2 px-2 rounded hover:bg-gray-100 active:bg-gray-200 transition-colors">
                                 <FiUser className="text-lg" />
                                 Profile
                             </a>
                         </div>
-
                     </div>
                 )}
             </nav>
-
         </>
     );
 };

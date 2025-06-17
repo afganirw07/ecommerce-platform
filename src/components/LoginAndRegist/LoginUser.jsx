@@ -29,7 +29,7 @@ const LoginUser = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      toast.success('Registration with Google successful!');
+      toast.success('Connected with Google successful!');
       setTimeout(() => {
         navigate('/home');
       }, 2000);
@@ -38,11 +38,11 @@ const LoginUser = () => {
     }
   };
 
-  // button handle google
+
   const loginWithGoogle = async () => {
     try {
       const res = await signInWithPopup(auth, provider);
-      const idToken = res._tokenResponse.idToken; // gunakan token ini untuk backend
+      const idToken = res._tokenResponse.idToken; 
 
       // Kirim token ke backend
       await loginGoogle(idToken);
@@ -52,7 +52,7 @@ const LoginUser = () => {
     }
   };
 
-  // cek apakah user sudah login
+  
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -60,13 +60,13 @@ const LoginUser = () => {
     }
   }, []);
 
-  // state untuk menyimpan input user
+
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
 
-  // ubah judul halaman
+
   useEffect(() => {
     document.title = 'Login';
     return () => {
@@ -82,7 +82,7 @@ const LoginUser = () => {
       toast.success(res.data.message);
 
       setTimeout(() => {
-        // simpan token
+      
         localStorage.setItem('token', res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
 

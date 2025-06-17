@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Rocket } from 'lucide-react';
 
+
 export default function SearchResult() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
