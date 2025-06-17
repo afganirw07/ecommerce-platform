@@ -49,13 +49,16 @@ const pickForHer = () => {
             onMouseLeave={handlePopoverToggle}
           />
         </div>
+
+        <a href="search?q=Accessories">
         <p className="font-[poppins] text-red-600 inline-flex items-center cursor-pointer">
           See All
           <ArrowForwardIosIcon
             className="text-red-600 ml-1"
             sx={{ fontSize: 12 }}
-          />
+            />
         </p>
+            </a>
 
         {/* Popover */}
         {popover && (

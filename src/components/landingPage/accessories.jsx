@@ -51,6 +51,7 @@ const Accessories = () => {
             onMouseLeave={handlePopoverToggle}
           />
         </div>
+        <a href="search?q=Accessories">
         <p className="font-[poppins] text-red-600 inline-flex items-center cursor-pointer">
           See All
           <ArrowForwardIosIcon
@@ -58,6 +59,7 @@ const Accessories = () => {
             sx={{ fontSize: 12 }}
           />
         </p>
+        </a>
 
         {/* Popover */}
         {popover && (

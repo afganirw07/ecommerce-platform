@@ -81,16 +81,16 @@ const handleSearchSubmit = (e) => {
                             ))}
                         </div>
 
-                        <FiShoppingCart onClick={handleCartClick} className="text-xl cursor-pointer" />
+                        <FiShoppingCart onClick={handleCartClick} className="text-xl cursor-pointer" title='Cart' />
                     </div>
 
-                    {/* Profile and Wishlist */}
+                    {/* Profile and Favorite */}
                     <div className="hidden md:flex items-center space-x-6 ml-5 mr-10">
-                        <button onClick={handleFavoritesClick} className="text-xl cursor-pointer" title="Wishlist">
+                        <button onClick={handleFavoritesClick} className="text-xl cursor-pointer" title="Favorites">
                             <FiHeart />
                         </button>
 
-                        <button className="text-xl cursor-pointer" title="Login">
+                        <button className="text-xl cursor-pointer" title="Profile">
                             <FiUser />
                         </button>
                     </div>
