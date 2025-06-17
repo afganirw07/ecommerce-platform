@@ -26,10 +26,3 @@ dist-ssr
 # env hide
 .env*
 .env
-
-# Firebase
-firebase-debug.log
-src/firebase-config.js
-firebase.json
-
-chatBotGeminiAi.js

@@ -14,6 +14,7 @@ import Pembayaran from './pages/pembayaran';
 import Confirmations from './pages/afterPay';
 import SearchPage from './pages/searchPage';
 import ProfilePage from './pages/profilePage'
+import HistoryPage from './pages/history';
 
 function App() {
   return (
@@ -55,6 +56,14 @@ function App() {
       element= {
         <ProtectedRoute>
           <ProfilePage />
+        </ProtectedRoute>
+      }
+      />
+      <Route
+      path='/history'
+      element= {
+        <ProtectedRoute>
+          <HistoryPage />
         </ProtectedRoute>
       }
       />

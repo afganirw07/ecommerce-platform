@@ -48,6 +48,9 @@ const handleFavoritesClick = () => {
 const handleCartClick = () => {
     navigate('/cart');
 };
+const handleHistoryClick = () => {
+    navigate('/history');
+};
 
     return (
         <div className=" bg-gray-50">
@@ -89,7 +92,7 @@ const handleCartClick = () => {
                                 icon: <Clock className="mt-1 mr-4 h-6 w-6 text-gray-600" />,
                                 title: 'Shopping History',
                                 desc: 'View a detailed history of all your past purchases',
-                                onClick: () => { }
+                                onClick: () => { handleHistoryClick()}
                             },
                             {
                                 icon: <KeyRound className="mt-1 mr-4 h-6 w-6 text-gray-600" />,
