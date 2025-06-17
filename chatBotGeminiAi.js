@@ -78,8 +78,7 @@ export const getRecommendation = async (userInput) => {
             .join(', ')}`
         : '';
 
-   const prompt = `gi
-Kamu adalah asisten belanja AI untuk ReKicks, sebuah brand e-commerce global yang menjual sneakers, apparel, jaket, dan aksesoris.
+   const prompt = `Kamu adalah asisten belanja AI untuk ReKicks, sebuah brand e-commerce global yang menjual sneakers, apparel, jaket, dan aksesoris.
 
 ${productContext ? `Berikut adalah data produk yang tersedia:\n${productContext}\n` : ''}
 
