@@ -79,7 +79,7 @@ export default function SearchResult() {
                 Lowest Ask
               </p>
               <p className="text-[18px] md:text-[20px] font-bold mb-1">
-                Rp {product.retailPrice}
+                $ {product.retailPrice}
               </p>
               <div className="flex items-center space-x-2 font-[poppins] text-xs md:text-sm">
                 <div className="inline-flex items-center space-x-1 bg-gray-100 text-xs px-2 py-1 rounded-md">

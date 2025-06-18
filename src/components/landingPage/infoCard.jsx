@@ -1,4 +1,4 @@
-import { LucideBadgeCheck, LucideUndo2, LucideUpload } from 'lucide-react';
+import { LucideBadgeCheck, LucideUndo2, EarthLock  } from 'lucide-react';
 
 const infoData = [
   {
@@ -16,10 +16,10 @@ const infoData = [
     link: '#',
   },
   {
-    icon: <LucideUpload className="w-6 h-6 text-white" />,
-    title: 'Start Selling ASAP',
+    icon: <EarthLock  className="w-6 h-6 text-white" />,
+    title: 'Privacy Guaranteed',
     description:
-      'You can start selling on ReKicks in just a few clicks, no application process necessary.',
+      'We safeguard your data with top-tier encryption and strict privacy policies.',
     link: '#',
   },
 ];
