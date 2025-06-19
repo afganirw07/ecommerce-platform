@@ -10,7 +10,8 @@ A modern and responsive e-commerce frontend built with **React.js** and **Tailwi
 
 ## 📺 Preview
 
-![Preview](https://your-image-url.com/preview.gif)
+![Preview](https://i.imgur.com/yR1IQtz.gif)
+
 
 > ✨ The preview above demonstrates the main features and UI interactions of the application.
 
