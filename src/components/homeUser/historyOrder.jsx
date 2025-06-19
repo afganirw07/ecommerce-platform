@@ -34,7 +34,7 @@ const historyOrder = () => {
                     <div className="flex items-center flex-wrap gap-4">
                         <h3 className="text-2xl font-semibold text-slate-900">Order History</h3>
                         <div className="ml-auto">
-                            <select className="appearance-none cursor-pointer bg-white border border-gray-300 outline-0 px-4 py-2 text-slate-900 rounded-md text-[15px]">
+                            <select className="appearance-none cursor-pointer bg-white border border-gray-300 outline-0 px-4 py-2 text-slate-900 rounded-md text-[15px] hover:bg-gray-50 ">
                                 <option>All orders</option>
                                 <option>Completed</option>
                                 <option>Processing</option>

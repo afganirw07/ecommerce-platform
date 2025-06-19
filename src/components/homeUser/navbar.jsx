@@ -261,10 +261,10 @@ const Navbar = () => {
 
                     {/* Hamburger */}
                     <div className="md:hidden justify-end flex items-center space-x-4">
-                        <button onClick={handleFavoritesClick} className="w-full flex justify-center py-2 text-xl">
+                        <button onClick={handleFavoritesClick} className="w-full cursor-pointer flex justify-center py-2 text-xl">
                             <FiHeart />
                         </button>
-                        <button onClick={handleCartClick} className="w-full flex justify-center py-2 text-xl">
+                        <button onClick={handleCartClick} className="w-full flex cursor-pointer justify-center py-2 text-xl">
                             <FiShoppingCart />
                         </button>
                         <button onClick={() => setIsOpen(!isOpen)}>
