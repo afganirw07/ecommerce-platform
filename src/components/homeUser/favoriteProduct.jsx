@@ -179,35 +179,35 @@ const FavoriteProducts = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-end items-center gap-2 mb-6">
-       <div className="flex items-center gap-2 ">
-  <label className="text-sm font-semibold text-gray-800">Sort By:</label>
-  <div className="relative">
-    <select
-      className="appearance-none text-xs md:text-sm pl-4 pr-10 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
-      value={sortOption}
-      onChange={(e) => setSortOption(e.target.value)}
-    >
-      <option value="recent">Recently Added</option>
-      <option value="priceLow">Price: Low to High</option>
-      <option value="priceHigh">Price: High to Low</option>
-      <option value="nameAZ">Name: A-Z</option>
-      <option value="nameZA">Name: Z-A</option>
-    </select>
-    {/* Custom arrow */}
-    <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
-      <svg
-        className="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </div>
-  </div>
-</div>
+      <div className="flex justify-between items-center flex-wrap gap-4 mb-6 md:justify-end">
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-semibold text-gray-800">Sort By:</label>
+          <div className="relative">
+            <select
+              className="appearance-none text-xs md:text-sm pl-4 pr-10 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="recent">Recently Added</option>
+              <option value="priceLow">Price: Low to High</option>
+              <option value="priceHigh">Price: High to Low</option>
+              <option value="nameAZ">Name: A-Z</option>
+              <option value="nameZA">Name: Z-A</option>
+            </select>
+            {/* Custom arrow */}
+            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
 
 
         <div className="flex space-x-2">
