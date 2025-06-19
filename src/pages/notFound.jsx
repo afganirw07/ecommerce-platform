@@ -2,14 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-const notFound = () => {
-  // haddle button
+const NotFound = () => {
+  // handle button
   const navigate = useNavigate();
   const handleRegisOnclick = () => {
     navigate('/');
   };
 
-  // ubah judul
+  // change page title
   useEffect(() => {
     document.title = 'Not Found';
     return () => {
@@ -24,21 +24,20 @@ const notFound = () => {
           404
         </h1>
         <p className="text-xl lg:text-2xl font-semibold text-black opacity-70 mb-2">
-          Halaman tidak ditemukan
+          Page not found
         </p>
         <p className="text-gray-500 dark:text-gray-400 mb-6">
-          Maaf, halaman yang kamu cari tidak tersedia. Silakan kembali ke
-          beranda.
+          Sorry, the page you are looking for is not available. Please return to the homepage.
         </p>
         <button
           onClick={handleRegisOnclick}
           className="px-6 py-3 bg-red-500 text-white rounded-md cursor-pointer hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 transition"
         >
-          Kembali ke Beranda
+          Back to Homepage
         </button>
       </div>
     </section>
   );
 };
 
-export default notFound;
+export default NotFound;
