@@ -4,26 +4,30 @@
 A modern and responsive e-commerce frontend built with **React.js** and **Tailwind CSS**, connected to a RESTful API powered by Express.js. This project enables users to browse products, manage cart and wishlist, perform checkout, and view order history.
 
 > 👉 This is the **frontend repository**.  
-> 🔗 Backend repo: [E-Commerce Backend](https://github.com/yourusername/ecommerce-backend)
+> 🔗 Backend repo: [E-Commerce Backend](https://github.com/afganirw07/be-projek-web-progdas)
 
 ---
 
-## 🌐 Live Demo
+## 📺 Preview
 
-![Preview](https://your-image-url.com/preview.gif)  
-🔗 [Live Site](https://your-frontend.vercel.app)
+![Preview](https://your-image-url.com/preview.gif)
+
+> ✨ The preview above demonstrates the main features and UI interactions of the application.
 
 ---
-
 ## 📌 Features
 
-- 🛍️ Browse & filter products
-- 🧡 Add to wishlist
-- 🛒 Cart management
-- 🔐 JWT-based login & register
-- 💳 Checkout process
-- 📦 Order history
-- 📱 Fully responsive layout
+- 🛍️ Browse & Filter Products  
+- 💬 AI Chat Assistant  
+- 🧡 Wishlist Management  
+- 🛒 Cart Management  
+- 🧾 Purchase History  
+- 🔐 JWT-based Login & Register  
+- 💳 Checkout Process  
+- 📦 Invoice Order 
+- 📱 Fully Responsive Layout  
+- ✨ And More...
+
 
 ---
 
@@ -34,7 +38,7 @@ client/
 ├── src/
 │   ├── components/       # Reusable UI components
 │   ├── pages/            # Page views (Home, Cart, Login, etc.)
-│   ├── api/              # Axios service functions
+│   ├── service/          # Axios service functions
 │   ├── assets/           # Images and icons
 │   ├── App.jsx           # Main App component
 │   └── main.jsx          # App entry point
@@ -46,12 +50,12 @@ client/
 
 ## ⚙️ Tech Stack
 
-- **Framework:** React
-- **Styling:** Tailwind CSS
-- **Routing:** React Router DOM
-- **HTTP Client:** Axios
-- **State Management:** useState, useEffect, Context API or Zustand
-- **Auth:** Token-based authentication (JWT via backend)
+- **Framework:** React  
+- **Styling:** Tailwind CSS  
+- **Routing:** React Router DOM  
+- **HTTP Client:** Axios  
+- **State Management:** useState, useEffect, Context API
+- **Auth:** Token-based authentication (JWT via backend)  
 
 ---
 
@@ -60,8 +64,8 @@ client/
 ### 1. Clone this repository
 
 ```bash
-git clone https://github.com/yourusername/ecommerce-frontend.git
-cd ecommerce-frontend
+git clone https://github.com/afganirw07/ecommerce-platform.git
+cd ecommerce-platform
 ```
 
 ### 2. Install dependencies
@@ -92,7 +96,7 @@ Visit `http://localhost:5173` in your browser.
 
 ## 🔌 Consumed API Endpoints
 
-Provided by [E-Commerce Backend](https://github.com/yourusername/ecommerce-backend):
+Provided by [E-Commerce Backend](https://github.com/afganirw07/be-projek-web-progdas):
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
@@ -114,8 +118,6 @@ Build for production:
 npm run build
 ```
 
-Deploy via platforms like **Vercel** or **Netlify**.
-
 ---
 
 ## 🤝 Contributing
@@ -133,5 +135,5 @@ Licensed under the **MIT License**.
 ## 👨‍💻 Author
 
 **Afgan Irwansyah Hidayat**  
-📧 afganirw07@gmail.com  
+📧 afgandevs@gmail.com  
 🔗 [GitHub](https://github.com/afganirw07)
